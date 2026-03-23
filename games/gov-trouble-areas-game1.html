@@ -1,0 +1,185 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Game 1 — Multi-Answer Concepts Mastery</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const GAME_TITLE = "Game 1 \u2014 Multi-Answer Concepts Mastery";
+const QUESTIONS = [{"stem": "Which TWO actions reflect informal constitutional change?", "choices": ["The states ratify a new amendment; The Supreme Court reinterprets a constitutional clause", "A long-standing presidential cabinet practice continues; The Supreme Court reinterprets a constitutional clause", "Congress passes a law that reshapes a federal program; The states ratify a new amendment", "A long-standing presidential cabinet practice continues; The states ratify a new amendment"], "answerIndex": 1, "hint": "Think: informal change happens without changing the document's wording.", "explain": "Customs and court decisions can change how the Constitution works without amending its text."}, {"stem": "Which TWO statements reflect limited government?", "choices": ["Government must follow the rule of law; State governments can ignore court rulings they dislike", "Government must follow the rule of law; Government only has powers granted to it", "Government only has powers granted to it; State governments can ignore court rulings they dislike", "Government officials may act however they think is best; Government must follow the rule of law"], "answerIndex": 1, "hint": "Limited government is about legal boundaries, not convenience.", "explain": "In a limited government, public officials are constrained by law and by specifically granted powers."}, {"stem": "Which TWO actions are examples of checks and balances?", "choices": ["The president vetoes a bill; A state issues driver's licenses", "The president vetoes a bill; Congress overrides a veto", "Congress overrides a veto; Citizens vote in a local election", "A state issues driver's licenses; Citizens vote in a local election"], "answerIndex": 1, "hint": "A check is one branch limiting another branch.", "explain": "A veto and an override are classic interbranch checks."}, {"stem": "Which THREE actions are examples of checks and balances?", "choices": ["The Supreme Court declares a law unconstitutional; The House and Senate pass identical bills; Congress impeaches a federal judge", "The Senate confirms a presidential nominee; The Supreme Court declares a law unconstitutional; The House and Senate pass identical bills", "The Senate confirms a presidential nominee; The Supreme Court declares a law unconstitutional; Congress impeaches a federal judge", "The Senate confirms a presidential nominee; The House and Senate pass identical bills; Congress impeaches a federal judge"], "answerIndex": 2, "hint": "Look for one branch restraining another, not just doing its own job.", "explain": "Confirmation, judicial review, and impeachment each restrain another branch."}, {"stem": "Which TWO ways can the Constitution change over time?", "choices": ["Formal amendment; Long-standing customs and practices", "Judicial interpretation; Ignoring the Constitution", "Ignoring the Constitution; Long-standing customs and practices", "Judicial interpretation; Long-standing customs and practices"], "answerIndex": 3, "hint": "This item focuses on change without new wording.", "explain": "Interpretation and custom both shift constitutional meaning over time."}, {"stem": "A president begins consulting a regular group of advisers, and later presidents keep doing the same. This best illustrates", "choices": ["federalism", "informal constitutional change", "judicial review", "popular sovereignty"], "answerIndex": 1, "hint": "Custom and practice can reshape government without an amendment.", "explain": "The cabinet developed largely through practice, making it an example of informal constitutional change."}, {"stem": "The Supreme Court broadens the meaning of free speech in a new ruling. This is best described as", "choices": ["an informal constitutional change through judicial interpretation", "a formal amendment", "an example of direct democracy", "a denial of due process"], "answerIndex": 0, "hint": "No words were added to the Constitution.", "explain": "A new court interpretation can change constitutional meaning without changing the text."}, {"stem": "Which statement best explains why checks and balances support liberty?", "choices": ["They let one branch rule quickly", "They make it harder for any one branch to dominate", "They eliminate conflict among officials", "They allow states to ignore national laws"], "answerIndex": 1, "hint": "The main idea is preventing concentrated power.", "explain": "Checks and balances protect liberty by forcing branches to share and contest power."}, {"stem": "Which action best reflects limited government?", "choices": ["A governor claims emergency powers with no legal basis", "A court strikes down an action that exceeded lawful authority", "Congress refuses to publish laws", "The president refuses to enforce any court ruling"], "answerIndex": 1, "hint": "Limited government depends on enforceable legal boundaries.", "explain": "When courts invalidate unlawful action, they reinforce limited government."}, {"stem": "Which scenario best shows an informal constitutional change rather than a formal one?", "choices": ["The states ratify an amendment lowering the voting age", "Congress and the president follow a new war powers routine over time", "The Constitution is rewritten by convention", "An amendment changes the Electoral College"], "answerIndex": 1, "hint": "Look for a changed practice without altered text.", "explain": "A repeated governing practice can reshape constitutional operations informally."}, {"stem": "Which TWO examples show limited government in practice?", "choices": ["A police officer needs probable cause for a warrant; Officials must act according to the Constitution", "Officials must act according to the Constitution; Congress may ignore elections when convenient", "A president can suspend any law at will; Officials must act according to the Constitution", "A police officer needs probable cause for a warrant; A president can suspend any law at will"], "answerIndex": 0, "hint": "Think constitutional limits on public power.", "explain": "Probable cause and constitutional obedience both restrict government action."}, {"stem": "Which branch is being checked when the Senate rejects a cabinet nominee?", "choices": ["Legislative", "Executive", "Judicial", "State"], "answerIndex": 1, "hint": "Appointments come from the president.", "explain": "Senate rejection checks the executive branch's appointment power."}, {"stem": "Which branch is being checked when a court overturns a law as unconstitutional?", "choices": ["Executive", "Judicial", "Legislative", "State"], "answerIndex": 2, "hint": "The law came from Congress.", "explain": "Judicial review checks legislative action by invalidating unconstitutional laws."}, {"stem": "Which statement best distinguishes separation of powers from checks and balances?", "choices": ["Separation assigns powers; checks allow branches to limit one another", "They mean exactly the same thing", "Checks only apply to states", "Separation only applies to courts"], "answerIndex": 0, "hint": "One concept distributes duties; the other restrains power.", "explain": "Separation divides government jobs, while checks and balances let each branch restrain others."}, {"stem": "Which TWO actions would most likely count as informal constitutional change?", "choices": ["A committee system becomes a major part of Congress; A political custom develops for presidential primaries", "A committee system becomes a major part of Congress; An amendment abolishes poll taxes", "An amendment abolishes poll taxes; The states ratify a new Bill of Rights amendment", "An amendment abolishes poll taxes; A political custom develops for presidential primaries"], "answerIndex": 0, "hint": "Again, no textual amendment.", "explain": "Committee practice and primary traditions changed government through custom, not amendment."}, {"stem": "A law says an agency may act only within powers granted by Congress. This most clearly reflects", "choices": ["limited government", "majority rule", "popular sovereignty", "reserved powers"], "answerIndex": 0, "hint": "The key idea is lawful boundaries.", "explain": "Government bodies may only exercise powers legally granted to them."}, {"stem": "Why are long-standing customs part of constitutional development?", "choices": ["They can shape how officials use powers in practice", "They replace all written law", "They allow one branch to ignore the others", "They end federalism"], "answerIndex": 0, "hint": "Think practical operation, not textual replacement.", "explain": "Customs matter because they influence how constitutional powers are actually used."}, {"stem": "Which TWO statements are true of judicial review?", "choices": ["It allows courts to write amendments; It can produce informal constitutional change", "It lets courts interpret constitutionality; It allows courts to write amendments", "It lets courts interpret constitutionality; It can produce informal constitutional change", "It lets courts interpret constitutionality; It makes Congress unnecessary"], "answerIndex": 2, "hint": "Courts interpret and thereby influence meaning.", "explain": "Judicial review can reshape constitutional meaning without rewriting the document."}, {"stem": "Which action is NOT a check and balance?", "choices": ["The president vetoes a bill", "Congress creates lower federal courts", "The Senate confirms judges", "The Court overturns an executive action"], "answerIndex": 1, "hint": "Ask whether one branch is restraining another in that moment.", "explain": "Creating lower courts is a legislative power, but not a direct check in the way the others are."}, {"stem": "Which example best shows that limited government protects individual rights?", "choices": ["Officials may search any home they choose", "Government must follow due process before depriving liberty", "The president may jail critics without trial", "Legislatures may cancel elections"], "answerIndex": 1, "hint": "Rights are protected when power is restrained by law.", "explain": "Due process is a concrete limit on government power."}, {"stem": "Which TWO actions reflect checks rather than just ordinary powers?", "choices": ["Congress prints committee schedules; A governor signs a state budget", "The president vetoes legislation; A governor signs a state budget", "Congress prints committee schedules; The president vetoes legislation", "The House impeaches an official; The president vetoes legislation"], "answerIndex": 3, "hint": "Look for branch-against-branch restraint.", "explain": "Impeachment and veto are both institutional checks."}, {"stem": "Which statement best summarizes informal constitutional change?", "choices": ["Change that occurs through use, interpretation, and custom", "Change made only by the people in national elections", "Change made by state constitutions", "Change that must be ratified by three-fourths of the states"], "answerIndex": 0, "hint": "No ratification here.", "explain": "Informal change happens through practice, precedent, and interpretation."}, {"stem": "A chief executive claims an inherent power that courts later narrow. Which principle is most directly reinforced by the court's action?", "choices": ["Limited government", "Direct democracy", "Elastic clause", "Reserved powers only"], "answerIndex": 0, "hint": "The court is drawing a legal boundary.", "explain": "By limiting claimed power, the court reinforces limited government."}, {"stem": "Which TWO are strongest examples of checks and balances?", "choices": ["The president negotiates a treaty, then the Senate approves; Congress holds a routine lunch break", "The president negotiates a treaty, then the Senate approves; A governor speaks at a ceremony", "Congress holds a routine lunch break; A governor speaks at a ceremony", "The House impeaches, then the Senate tries; The president negotiates a treaty, then the Senate approves"], "answerIndex": 3, "hint": "Both involve shared or restraining authority.", "explain": "Impeachment/trial and treaty-making/approval each reflect branch-to-branch control."}, {"stem": "Why do many students confuse checks and balances with separation of powers?", "choices": ["Because both involve how power is organized, but one divides while the other restrains", "Because neither deals with government power", "Because both apply only to local government", "Because both are about voting rights only"], "answerIndex": 0, "hint": "This is a compare-and-contrast item.", "explain": "The two ideas are related but not identical: one allocates power, the other limits it."}, {"stem": "Which TWO scenarios show informal, not formal, constitutional change?", "choices": ["Parties create a caucus system that shapes nominations; The states ratify an amendment on succession", "The Supreme Court expands rights through interpretation; The states ratify an amendment on succession", "The Supreme Court expands rights through interpretation; Parties create a caucus system that shapes nominations", "The Supreme Court expands rights through interpretation; An amendment lowers the voting age"], "answerIndex": 2, "hint": "Interpretation and party practice matter here.", "explain": "Court interpretation and party customs are informal constitutional change."}, {"stem": "A branch may not go beyond its lawful powers. That principle is called", "choices": ["popular sovereignty", "limited government", "majority rule", "republicanism"], "answerIndex": 1, "hint": "This one is the core definition.", "explain": "Limited government means officials can act only within legal limits."}, {"stem": "Which action best illustrates a legislative check on the judiciary?", "choices": ["Congress overrides a veto", "The Senate confirms a judge", "A court hears an appeal", "The president issues a pardon"], "answerIndex": 1, "hint": "Think about how judges reach the bench.", "explain": "The Senate's confirmation power is a legislative check on the judiciary."}, {"stem": "Which example best shows how custom can shape the Constitution?", "choices": ["Two-term expectations influenced presidents before the 22nd Amendment", "A ratified amendment changed the electoral process", "A state revised its own constitution", "A city passed a parking ordinance"], "answerIndex": 0, "hint": "This began as a norm before it became written.", "explain": "Washington's two-term precedent is a famous example of custom shaping constitutional practice."}, {"stem": "Which TWO principles are most directly served when powers are divided and branches can block one another?", "choices": ["Prevention of concentrated power; Protection of liberty", "Protection of liberty; Unlimited government", "Unlimited government; Single-branch control", "Prevention of concentrated power; Unlimited government"], "answerIndex": 0, "hint": "The Constitution tries to prevent concentrated power.", "explain": "Divided and checked powers help prevent tyranny and protect liberty."}];
+
+function shuffle(arr, seedStr){
+  let h = 2166136261 >>> 0;
+  for (let i=0;i<seedStr.length;i++){ h ^= seedStr.charCodeAt(i); h = Math.imul(h, 16777619); }
+  function rand(){ h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+  const a = [...arr];
+  for (let i=a.length-1;i>0;i--){ const j=Math.floor(rand()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function fmtDate(d){ return d.toLocaleDateString() + " " + d.toLocaleTimeString(); }
+function fmtSecs(s){ const m = String(Math.floor(s/60)).padStart(2,'0'); const ss = String(s%60).padStart(2,'0'); return `${m}:${ss}`; }
+function hardRestart(){ location.href = location.pathname + "?v=" + Date.now(); }
+
+const app = document.getElementById('app');
+let state = {
+  name: "",
+  startedAt: null,
+  timer: 0,
+  index: 0,
+  misses: 0,
+  attempts: 0,
+  questionOrder: [],
+  qset: [],
+  locked: false
+};
+let tick = null;
+
+function buildQSet(){
+  const seedBase = state.name + "|" + state.startedAt.toISOString() + "|" + GAME_TITLE;
+  const qs = QUESTIONS.map((q, idx) => {
+    const order = shuffle(q.choices.map((_,i)=>i), seedBase + "|" + idx);
+    const choices = order.map(i => q.choices[i]);
+    const answerIndex = order.indexOf(q.answerIndex);
+    return {...q, choices, answerIndex};
+  });
+  state.qset = shuffle(qs, seedBase + "|QORDER");
+}
+
+function startGame(){
+  const input = document.getElementById('studentName');
+  const nm = (input.value || "").trim();
+  if(!nm){ alert("Enter your name to begin."); input.focus(); return; }
+  state.name = nm;
+  state.startedAt = new Date();
+  state.timer = 0;
+  state.index = 0;
+  state.misses = 0;
+  state.attempts = 0;
+  state.locked = false;
+  buildQSet();
+  if(tick) clearInterval(tick);
+  tick = setInterval(()=>{ state.timer++; const rt=document.getElementById('runtime'); if(rt) rt.textContent = fmtSecs(state.timer); },1000);
+  renderGame();
+}
+
+function renderStart(){
+  app.innerHTML = `
+  <div class="start-card hero">
+    <div class="kicker">Legend • Government Trouble Areas</div>
+    <h1>${GAME_TITLE}</h1>
+    <p class="sub">Enter your name to begin. Mastery rules: auto-advance on correct, hint on miss, and you must fix missed items before moving forward.</p>
+    <div class="pills">
+      <span class="pill">${QUESTIONS.length} questions</span>
+      <span class="pill">Auto-submit</span>
+      <span class="pill">Hint on miss</span>
+      <span class="pill">Ticket at finish</span>
+    </div>
+    <input id="studentName" placeholder="Enter your name to begin"/>
+    <div class="row">
+      <button class="btn primary" onclick="startGame()">Start Game</button>
+    </div>
+    <div class="small muted" style="margin-top:12px">Your ticket will show name, date, start time, runtime, accuracy, attempts, and result.</div>
+  </div>`;
+}
+
+function renderGame(){
+  const q = state.qset[state.index];
+  const progress = Math.round((state.index / state.qset.length) * 100);
+  const accuracy = Math.max(0, Math.round(((state.attempts - state.misses) / Math.max(1, state.attempts)) * 100));
+  app.innerHTML = `
+    <a class="back-link" href="index.html">← Back to Hub</a>
+    <header class="hero">
+      <div class="kicker">Legend • Government Trouble Areas</div>
+      <h1>${GAME_TITLE}</h1>
+      <p class="sub">Targeted reps built from the most frequently missed concepts in your class data.</p>
+      <div class="hud">
+        <span class="stat">Name: ${state.name}</span>
+        <span class="stat">Progress: ${state.index+1} / ${state.qset.length}</span>
+        <span class="stat">Accuracy: ${accuracy}%</span>
+        <span class="stat">Runtime: <span id="runtime">${fmtSecs(state.timer)}</span></span>
+        <span class="stat">Attempts: ${state.attempts}</span>
+      </div>
+      <div style="margin-top:14px" class="progress-wrap"><div class="progress-bar" style="width:${progress}%"></div></div>
+    </header>
+
+    <section class="panel">
+      <div class="qnum">Question ${state.index+1}</div>
+      <div class="prompt">${q.stem}</div>
+      <div class="choices">
+        ${q.choices.map((c,i)=>`<button class="choice" id="c${i}" onclick="pick(${i})"><strong>${String.fromCharCode(65+i)}.</strong> ${c}</button>`).join("")}
+      </div>
+      <div id="feedback" class="feedback"></div>
+      <div class="footer-actions">
+        <button class="btn" onclick="hardRestart()">Restart</button>
+      </div>
+    </section>
+    <div class="error-box" id="errBox"></div>
+  `;
+}
+
+function pick(i){
+  if(state.locked) return;
+  const q = state.qset[state.index];
+  state.attempts++;
+  const fb = document.getElementById('feedback');
+  if(i === q.answerIndex){
+    document.getElementById("c"+i).classList.add("correct");
+    fb.className = "feedback good";
+    fb.textContent = "Correct. " + q.explain;
+    state.locked = true;
+    setTimeout(()=>{
+      state.index++;
+      state.locked = false;
+      if(state.index >= state.qset.length) finish();
+      else renderGame();
+    }, 1400);
+  } else {
+    state.misses++;
+    document.getElementById("c"+i).classList.add("wrong");
+    fb.className = "feedback bad";
+    fb.textContent = "Not yet. Hint: " + q.hint;
+  }
+}
+
+function finish(){
+  if(tick) clearInterval(tick);
+  const end = new Date();
+  const correctFirstTry = Math.max(0, state.attempts - state.misses);
+  const accuracy = Math.max(0, Math.round((correctFirstTry / Math.max(1,state.attempts)) * 100));
+  const result = state.misses === 0 ? "MASTERED" : "REPLAY";
+  app.innerHTML = `
+    <a class="back-link" href="index.html">← Back to Hub</a>
+    <div class="ticket">
+      <div class="kicker">Submission Ticket</div>
+      <h2>${GAME_TITLE}</h2>
+      <div class="ticket-grid">
+        <div class="stat">Name: ${state.name}</div>
+        <div class="stat">Date: ${end.toLocaleDateString()}</div>
+        <div class="stat">Started: ${fmtDate(state.startedAt)}</div>
+        <div class="stat">Finished: ${fmtDate(end)}</div>
+        <div class="stat">Runtime: ${fmtSecs(state.timer)}</div>
+        <div class="stat">Attempts: ${state.attempts}</div>
+        <div class="stat">Misses: ${state.misses}</div>
+        <div class="stat">Accuracy: ${accuracy}%</div>
+        <div class="stat">Result: ${result}</div>
+      </div>
+      <div class="footer-actions">
+        <button class="btn primary" onclick="hardRestart()">Play Again</button>
+        <a class="btn" href="index.html">Back to Hub</a>
+      </div>
+    </div>`;
+}
+
+window.addEventListener('error', (e)=>{
+  const box = document.getElementById('errBox');
+  if(box){ box.style.display='block'; box.textContent = "Error: " + e.message; }
+});
+renderStart();
+</script>
+</body>
+</html>
