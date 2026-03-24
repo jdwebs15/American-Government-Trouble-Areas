@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game 3 — Constitutional Change Lab</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <header class="hero">
+      <div class="kicker">Legend Mastery Series • American Government</div>
+      <h1>Game 3 — Constitutional Change Lab</h1>
+      <p class="sub">
+        Formal vs. informal constitutional change through amendments, court decisions, laws, and political practice.
+      </p>
+      <div class="pills">
+        <span class="pill">30 Questions</span>
+        <span class="pill">Formal vs Informal</span>
+        <span class="pill">Auto-submit</span>
+        <span class="pill">Hint on Miss</span>
+        <span class="pill">Forced Correction</span>
+        <span class="pill">Submission Ticket</span>
+      </div>
+    </header>
+
+    <div id="app"></div>
+  </div>
+
+<script>
+const QUESTIONS = [
+  {
+    passage: "The states ratify a new amendment that lowers the voting age across the United States.",
+    stem: "This is best described as",
+    choices: ["informal constitutional change", "a formal constitutional change", "judicial review", "an executive custom"],
+    correct: 1,
+    hint: "Think about whether the Constitution's actual text changed through Article V.",
+    explain: "A ratified amendment is a formal constitutional change because it changes the Constitution through the amendment process."
+  },
+  {
+    passage: "The Supreme Court issues a ruling that expands how due process protections apply to the states.",
+    stem: "This is best classified as",
+    choices: ["an informal constitutional change through interpretation", "a formal constitutional amendment", "a local government reform", "a state constitutional convention"],
+    correct: 0,
+    hint: "Ask whether the wording changed or whether the meaning changed through interpretation.",
+    explain: "Court interpretation can change how the Constitution operates without changing the written text, making it an informal constitutional change."
+  },
+  {
+    passage: "Political parties begin organizing national conventions to choose presidential candidates, even though the Constitution does not describe this process.",
+    stem: "This is best described as",
+    choices: ["a formal constitutional revision", "an informal constitutional change through political practice", "a violation of federalism", "an amendment proposed by Congress"],
+    correct: 1,
+    hint: "Think custom and practice, not the amendment process.",
+    explain: "Political party conventions are examples of informal constitutional change through custom and long-standing political practice."
+  },
+  {
+    passage: "Congress and the states approve an amendment guaranteeing equal protection under the law.",
+    stem: "This change is an example of",
+    choices: ["judicial restraint", "an informal custom", "a formal constitutional change", "an implied power"],
+    correct: 2,
+    hint: "Did the constitutional text itself change?",
+    explain: "An amendment added through Article V is a formal constitutional change."
+  },
+  {
+    passage: "Over time, presidents begin using executive agreements more frequently in foreign affairs, even though the Constitution focuses more explicitly on treaties.",
+    stem: "This development is best classified as",
+    choices: ["formal constitutional change", "informal constitutional change through practice", "judicial review", "popular sovereignty"],
+    correct: 1,
+    hint: "The key is repeated government practice rather than formal amendment.",
+    explain: "Executive agreements became more common through governmental practice, so this is an informal constitutional change."
+  },
+  {
+    passage: "A constitutional amendment abolishes slavery throughout the United States.",
+    stem: "This is best described as",
+    choices: ["an informal constitutional tradition", "a formal constitutional change", "a court-created doctrine", "a legislative custom"],
+    correct: 1,
+    hint: "This involved changing the Constitution's wording.",
+    explain: "The abolition of slavery through the 13th Amendment was a formal constitutional change."
+  },
+  {
+    passage: "The Supreme Court establishes the principle of judicial review in a landmark case.",
+    stem: "This most clearly represents",
+    choices: ["formal constitutional change through ratification", "informal constitutional change through interpretation", "state nullification", "executive privilege"],
+    correct: 1,
+    hint: "No amendment was added, but constitutional meaning and practice changed.",
+    explain: "Judicial review became part of constitutional practice through court interpretation, making it an informal constitutional change."
+  },
+  {
+    passage: "Congress passes major civil rights legislation that changes how constitutional protections are enforced in everyday life.",
+    stem: "This is best understood as",
+    choices: ["an example of informal constitutional change through legislation", "a formal amendment", "an unconstitutional act by definition", "a denial of federalism"],
+    correct: 0,
+    hint: "The Constitution's text did not change, but how rights are carried out did.",
+    explain: "Legislation can change how constitutional principles are enforced, which is a form of informal constitutional change."
+  },
+  {
+    passage: "An amendment changes how United States senators are selected.",
+    stem: "This is an example of",
+    choices: ["formal constitutional change", "custom and tradition only", "judicial incorporation", "executive expansion only"],
+    correct: 0,
+    hint: "This required Article V.",
+    explain: "Changing senator selection through the 17th Amendment was a formal constitutional change."
+  },
+  {
+    passage: "National political parties and committee leadership become central to how Congress actually operates.",
+    stem: "This development is best described as",
+    choices: ["a formal constitutional change", "an informal constitutional change through institutional practice", "a constitutional amendment convention", "a direct violation of separation of powers"],
+    correct: 1,
+    hint: "Think about how the system operates in practice, not on paper.",
+    explain: "Congressional committees and party leadership changed how government functions through practice, not formal amendment."
+  },
+  {
+    passage: "The states ratify an amendment extending voting rights to women.",
+    stem: "This is best classified as",
+    choices: ["an informal interpretation", "a formal constitutional change", "a judicial precedent only", "a cabinet custom"],
+    correct: 1,
+    hint: "This directly altered the Constitution.",
+    explain: "The 19th Amendment was a formal constitutional change because it changed constitutional text and law."
+  },
+  {
+    passage: "The Supreme Court rules that many protections in the Bill of Rights apply to the states through the 14th Amendment.",
+    stem: "This is best described as",
+    choices: ["an informal constitutional change through interpretation", "a formal rewrite of the Constitution", "an executive order", "a state legislative custom"],
+    correct: 0,
+    hint: "No new amendment was added, but constitutional meaning expanded.",
+    explain: "Through incorporation doctrine, the Court changed how constitutional rights applied, making this an informal constitutional change."
+  },
+  {
+    passage: "Presidents begin regularly sending proposed legislative agendas to Congress, creating a strong expectation for executive leadership in lawmaking discussions.",
+    stem: "This most clearly represents",
+    choices: ["formal constitutional change", "informal constitutional change through custom", "judicial review", "state sovereignty only"],
+    correct: 1,
+    hint: "The Constitution did not change, but political behavior did.",
+    explain: "Presidential legislative leadership developed through political practice, so it is an informal constitutional change."
+  },
+  {
+    passage: "A new amendment prohibits poll taxes in federal elections.",
+    stem: "This is an example of",
+    choices: ["formal constitutional change", "informal judicial interpretation", "party custom", "executive practice"],
+    correct: 0,
+    hint: "The constitutional text changed through ratification.",
+    explain: "The 24th Amendment is a formal constitutional change."
+  },
+  {
+    passage: "The Supreme Court decides that separate public schools are inherently unequal.",
+    stem: "This represents",
+    choices: ["formal constitutional amendment", "informal constitutional change through judicial interpretation", "a state legislative revision", "an executive custom"],
+    correct: 1,
+    hint: "Think about how court decisions change constitutional meaning.",
+    explain: "When the Court reinterprets equal protection, it informally changes how the Constitution operates."
+  },
+  {
+    passage: "Congress uses implied powers under the Necessary and Proper Clause to create new institutions not specifically listed in the Constitution.",
+    stem: "This is best classified as",
+    choices: ["formal constitutional change", "informal constitutional change through legislation and interpretation", "direct democracy", "judicial nullification"],
+    correct: 1,
+    hint: "The Constitution's text stayed the same, but government practice expanded.",
+    explain: "Using implied powers changes how government functions without changing the Constitution's wording, making it informal change."
+  },
+  {
+    passage: "An amendment changes presidential term limits after years of informal precedent set by earlier presidents.",
+    stem: "The amendment itself is best described as",
+    choices: ["an informal custom", "a formal constitutional change", "a judicial doctrine", "a legislative oversight practice"],
+    correct: 1,
+    hint: "Precedent came first, but the question asks about the amendment itself.",
+    explain: "Once term limits were written into the Constitution through amendment, the change became formal."
+  },
+  {
+    passage: "For many years, presidents followed a two-term tradition even though the Constitution did not originally require it.",
+    stem: "That tradition before amendment was an example of",
+    choices: ["formal constitutional change", "informal constitutional change through custom", "judicial review", "federalism"],
+    correct: 1,
+    hint: "This was based on tradition, not constitutional text.",
+    explain: "The two-term tradition began as an informal constitutional custom before it was formally added by amendment."
+  },
+  {
+    passage: "Congressional committees gain influence over legislation and oversight even though the Constitution does not spell out the committee system in detail.",
+    stem: "This is best described as",
+    choices: ["formal constitutional amendment", "informal constitutional change through institutional development", "judicial federalism", "executive branch supremacy"],
+    correct: 1,
+    hint: "Think about change through structure and practice inside government.",
+    explain: "Committee power developed through practice and institutional growth, which is a form of informal constitutional change."
+  },
+  {
+    passage: "The Constitution is amended to clarify the procedures used when no presidential candidate wins a majority in the Electoral College.",
+    stem: "This is best classified as",
+    choices: ["an informal custom", "a formal constitutional change", "judicial interpretation only", "an executive order"],
+    correct: 1,
+    hint: "Was Article V used to revise the document?",
+    explain: "Using an amendment to revise constitutional procedures is a formal constitutional change."
+  },
+  {
+    passage: "The Court broadens the definition of protected speech in a major First Amendment decision.",
+    stem: "This is an example of",
+    choices: ["formal constitutional change", "informal constitutional change through interpretation", "a state amendment", "cabinet development only"],
+    correct: 1,
+    hint: "The wording stayed the same, but the scope changed.",
+    explain: "When the Court broadens the meaning of a constitutional right, that is informal constitutional change through interpretation."
+  },
+  {
+    passage: "The national government increasingly relies on administrative agencies to carry out laws and regulations in complex policy areas.",
+    stem: "This change is best understood as",
+    choices: ["formal constitutional change", "informal constitutional change through governmental development", "a constitutional convention", "an illegal transfer of power by definition"],
+    correct: 1,
+    hint: "This is about how government functions in practice over time.",
+    explain: "Administrative growth changed the operation of government without amending the Constitution, making it an informal constitutional change."
+  },
+  {
+    passage: "The states ratify an amendment guaranteeing citizens the right to vote regardless of race.",
+    stem: "This is best described as",
+    choices: ["a formal constitutional change", "an informal custom", "judicial incorporation", "party leadership development"],
+    correct: 0,
+    hint: "An amendment means the Constitution itself was changed.",
+    explain: "The 15th Amendment is a formal constitutional change because it changed the constitutional text."
+  },
+  {
+    passage: "The Court limits or expands presidential authority in a case interpreting separation of powers.",
+    stem: "This most clearly represents",
+    choices: ["an informal constitutional change through interpretation", "a formal constitutional amendment", "a local political custom", "state legislative supremacy"],
+    correct: 0,
+    hint: "Think about court interpretation shaping constitutional boundaries.",
+    explain: "When the Court interprets separation of powers, it can informally change how the Constitution works in practice."
+  },
+  {
+    passage: "The Constitution is amended to change the order of succession when the president dies or becomes disabled.",
+    stem: "This is an example of",
+    choices: ["judicial precedent", "formal constitutional change", "informal development", "an implied power"],
+    correct: 1,
+    hint: "This required constitutional ratification.",
+    explain: "Changing succession rules through amendment is a formal constitutional change."
+  },
+  {
+    passage: "Presidents increasingly use media and public appeals to pressure Congress and shape policy outcomes.",
+    stem: "This is best classified as",
+    choices: ["formal constitutional change", "informal constitutional change through political practice", "judicial review", "an Article V convention"],
+    correct: 1,
+    hint: "The presidency changed in practice, not by amendment.",
+    explain: "Modern presidential leadership through media and public appeals is a change in political practice, not constitutional text."
+  },
+  {
+    passage: "A major court decision changes how the Fourth Amendment applies to police searches.",
+    stem: "This is best described as",
+    choices: ["an informal constitutional change through interpretation", "a formal constitutional change", "a legislative custom only", "popular sovereignty"],
+    correct: 0,
+    hint: "The text of the Fourth Amendment stayed the same.",
+    explain: "Court rulings can reshape how constitutional rights are applied, which is informal constitutional change."
+  },
+  {
+    passage: "An amendment lowers the minimum voting age in all elections.",
+    stem: "This is an example of",
+    choices: ["formal constitutional change", "judicial interpretation", "executive practice", "informal party development"],
+    correct: 0,
+    hint: "This changed the Constitution itself.",
+    explain: "The 26th Amendment is a formal constitutional change."
+  },
+  {
+    passage: "The role of the vice president expands over time as presidents give the office more advisory and policy responsibilities.",
+    stem: "This development is best classified as",
+    choices: ["a formal constitutional amendment", "an informal constitutional change through practice", "judicial review", "federalism"],
+    correct: 1,
+    hint: "No amendment required, but the office changed in practice.",
+    explain: "The vice presidency changed over time through political practice, making this an informal constitutional change."
+  },
+  {
+    passage: "Congress and the states adopt an amendment changing how presidents and vice presidents are elected.",
+    stem: "This is best described as",
+    choices: ["an informal custom", "a formal constitutional change", "a court-created doctrine", "an executive agreement"],
+    correct: 1,
+    hint: "The Constitution's text was altered through amendment.",
+    explain: "Changing election rules through amendment is a formal constitutional change."
+  }
+];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function formatTime(seconds){
+  const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
+}
+
+function formatStamp(d){
+  return d.toLocaleString();
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
+const APP = document.getElementById("app");
+
+let studentName = "";
+let startedAt = null;
+let timer = null;
+let elapsed = 0;
+
+let questions = [];
+let current = 0;
+let misses = 0;
+let attempts = 0;
+let locked = false;
+let awaitingCorrection = false;
+
+function buildQuestionBank(){
+  return QUESTIONS.map((q, idx) => {
+    const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+    const remappedChoices = order.map(x => x.choice);
+    const newCorrect = order.findIndex(x => x.originalIndex === q.correct);
+    return { ...q, id: idx + 1, choices: remappedChoices, correct: newCorrect };
+  });
+}
+
+function startScreen(){
+  APP.innerHTML = `
+    <div class="start-card">
+      <h2>Enter your name to begin</h2>
+      <p>
+        Mastery rules: auto-advance on correct, hint on miss, and you must correct missed items before moving forward.
+      </p>
+      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
+      <button class="btn" id="startBtn">Start Game</button>
+      <hr class="sep">
+      <p class="note">Your ticket will show name, date, start time, runtime, accuracy, attempts, and result.</p>
+    </div>
+  `;
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if(!name){
+      alert("Please enter your name before starting.");
+      return;
+    }
+    studentName = name;
+    startedAt = new Date();
+    elapsed = 0;
+    current = 0;
+    misses = 0;
+    attempts = 0;
+    locked = false;
+    awaitingCorrection = false;
+    questions = buildQuestionBank();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed++;
+      const rt = document.getElementById("runtime");
+      if(rt) rt.textContent = formatTime(elapsed);
+    }, 1000);
+
+    renderQuestion();
+  });
+}
+
+function renderQuestion(feedbackHtml = ""){
+  const q = questions[current];
+  const progressPct = Math.round((current / questions.length) * 100);
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+
+  APP.innerHTML = `
+    <div class="game-wrap">
+      <div class="hud">
+        <div class="stat">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value">${accuracy}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Attempts</div>
+          <div class="stat-value">${attempts}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Runtime</div>
+          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Started</div>
+          <div class="stat-value">${formatStamp(startedAt)}</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-meta">Question ${current + 1} of ${questions.length}</div>
+        <div class="passage">${escapeHtml(q.passage)}</div>
+        <div class="stem">${escapeHtml(q.stem)}</div>
+
+        <div class="choices" id="choices"></div>
+
+        ${feedbackHtml}
+
+        <div class="controls">
+          <button class="btn secondary" id="restartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+
+  const choicesEl = document.getElementById("choices");
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(choice)}`;
+    btn.addEventListener("click", () => submitSingle(i));
+    choicesEl.appendChild(btn);
+  });
+}
+
+function submitSingle(selected){
+  if(locked) return;
+  locked = true;
+  attempts++;
+
+  const q = questions[current];
+  const correct = selected === q.correct;
+
+  if(correct){
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Correct</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    misses++;
+    awaitingCorrection = true;
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Not yet</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function retrySingle(selected){
+  if(!awaitingCorrection) return;
+  const q = questions[current];
+  if(selected === q.correct){
+    awaitingCorrection = false;
+    locked = true;
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Corrected</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Try again</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function nextQuestion(){
+  locked = false;
+  awaitingCorrection = false;
+  current++;
+  if(current >= questions.length){
+    finishGame();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishGame(){
+  clearInterval(timer);
+  const finishedAt = new Date();
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+  const passed = misses === 0 ? "MASTERED" : "REPLAY";
+
+  APP.innerHTML = `
+    <div class="ticket">
+      <h2>Submission Ticket</h2>
+      <p class="sub">Turn this in to show completion.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-item">
+          <div class="label">Name</div>
+          <div class="value">${escapeHtml(studentName)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Date</div>
+          <div class="value">${finishedAt.toLocaleDateString()}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Started</div>
+          <div class="value">${formatStamp(startedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Finished</div>
+          <div class="value">${formatStamp(finishedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Runtime</div>
+          <div class="value">${formatTime(elapsed)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Accuracy</div>
+          <div class="value">${accuracy}%</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Attempts</div>
+          <div class="value">${attempts}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Result</div>
+          <div class="value">${passed}</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playAgain">Play Again</button>
+        <a class="btn secondary" href="../index.html">Back to Hub</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("playAgain").addEventListener("click", hardRestart);
+}
+
+function hardRestart(){
+  if(timer) clearInterval(timer);
+  studentName = "";
+  startedAt = null;
+  elapsed = 0;
+  current = 0;
+  misses = 0;
+  attempts = 0;
+  locked = false;
+  awaitingCorrection = false;
+  startScreen();
+}
+
+startScreen();
+</script>
+</body>
+</html>
