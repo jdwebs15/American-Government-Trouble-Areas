@@ -641,7 +641,7 @@ function submitSingle(selected){
       </div>
     `;
     renderQuestion(feedback);
-    setTimeout(nextQuestion, 7200);
+    setTimeout(nextQuestion, 5000);
   } else {
     misses++;
     awaitingCorrection = true;
@@ -672,7 +672,7 @@ function retrySingle(selected){
       </div>
     `;
     renderQuestion(feedback);
-    setTimeout(nextQuestion, 1200);
+    setTimeout(nextQuestion, 5000);
   } else {
     const feedback = `
       <div class="feedback bad">
@@ -710,7 +710,7 @@ function submitMulti(){
       </div>
     `;
     renderQuestion(feedback);
-    setTimeout(nextQuestion, 1200);
+    setTimeout(nextQuestion, 5000);
   } else {
     misses++;
     awaitingCorrection = true;
