@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game 4 — Checks & Balances Simulator</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <header class="hero">
+      <div class="kicker">Legend Mastery Series • American Government</div>
+      <h1>Game 4 — Checks &amp; Balances Simulator</h1>
+      <p class="sub">
+        Practice identifying who is checking whom through vetoes, overrides, judicial review, confirmations, treaties, impeachment, and appointments.
+      </p>
+      <div class="pills">
+        <span class="pill">30 Questions</span>
+        <span class="pill">Checks &amp; Balances</span>
+        <span class="pill">Auto-submit</span>
+        <span class="pill">Hint on Miss</span>
+        <span class="pill">Forced Correction</span>
+        <span class="pill">Submission Ticket</span>
+      </div>
+    </header>
+
+    <div id="app"></div>
+  </div>
+
+<script>
+const QUESTIONS = [
+  {
+    passage: "Congress passes a bill, but the president refuses to sign it and returns it to Congress with objections.",
+    stem: "This action is an example of",
+    choices: ["judicial review", "executive veto power checking the legislative branch", "impeachment", "state nullification"],
+    correct: 1,
+    hint: "Ask which branch is stopping a law from taking effect.",
+    explain: "When the president vetoes a bill, the executive branch is checking the legislative branch."
+  },
+  {
+    passage: "After a presidential veto, Congress gathers enough votes in both houses to pass the bill anyway.",
+    stem: "This action is best described as",
+    choices: ["executive enforcement", "judicial review", "legislative override checking the executive branch", "an amendment process"],
+    correct: 2,
+    hint: "Think about which branch can respond to a veto.",
+    explain: "Congress can override a presidential veto, which is the legislative branch checking the executive branch."
+  },
+  {
+    passage: "The Supreme Court rules that a law passed by Congress violates the Constitution.",
+    stem: "This most clearly shows",
+    choices: ["popular sovereignty", "judicial review checking the legislative branch", "executive privilege", "federalism only"],
+    correct: 1,
+    hint: "Which branch can declare laws unconstitutional?",
+    explain: "When the Supreme Court strikes down a law, the judicial branch is checking the legislative branch."
+  },
+  {
+    passage: "The Senate rejects a president's nominee for the Supreme Court.",
+    stem: "This action best demonstrates",
+    choices: ["executive power over the courts", "legislative confirmation power checking the executive branch", "judicial review", "state control over federal offices"],
+    correct: 1,
+    hint: "Which branch approves major appointments?",
+    explain: "The Senate's power to confirm or reject nominees is a legislative check on executive power."
+  },
+  {
+    passage: "A president negotiates a treaty with another nation, but the Senate votes not to approve it.",
+    stem: "This is an example of",
+    choices: ["the judicial branch checking the executive branch", "Congress passing a law", "the legislative branch checking the executive branch", "an amendment convention"],
+    correct: 2,
+    hint: "Treaties need Senate approval.",
+    explain: "The Senate's power to approve or reject treaties is a legislative check on the executive branch."
+  },
+  {
+    passage: "The House of Representatives votes to impeach a federal judge for misconduct.",
+    stem: "This action best shows",
+    choices: ["executive review of judges", "the legislative branch checking the judicial branch", "state governments checking federal judges", "popular sovereignty only"],
+    correct: 1,
+    hint: "Impeachment begins in the House.",
+    explain: "The House can impeach judges, which is one way the legislative branch checks the judicial branch."
+  },
+  {
+    passage: "The Senate conducts a trial and votes to remove an impeached president from office.",
+    stem: "This action is best described as",
+    choices: ["the judicial branch checking the executive branch", "the legislative branch checking the executive branch", "a state government check", "executive enforcement"],
+    correct: 1,
+    hint: "Which branch holds the impeachment trial?",
+    explain: "The Senate can remove a president through impeachment, which is a legislative check on executive power."
+  },
+  {
+    passage: "The Supreme Court rules that a president's executive action exceeds constitutional authority.",
+    stem: "This is an example of",
+    choices: ["the legislative branch checking the executive branch", "the judicial branch checking the executive branch", "federalism", "direct democracy"],
+    correct: 1,
+    hint: "Which branch interprets constitutionality in court cases?",
+    explain: "When the Court limits an executive action, the judicial branch is checking the executive branch."
+  },
+  {
+    passage: "Congress creates a lower federal court system through legislation.",
+    stem: "This power best shows that the legislative branch",
+    choices: ["has no role in the judiciary", "helps shape the judicial branch", "controls state courts", "can remove constitutional rights"],
+    correct: 1,
+    hint: "Think about who establishes lower federal courts.",
+    explain: "Congress helps shape the judiciary by creating lower federal courts and setting much of their structure."
+  },
+  {
+    passage: "The president appoints federal judges when vacancies occur.",
+    stem: "This action best demonstrates that the executive branch",
+    choices: ["ignores the courts", "participates in shaping the judicial branch", "can overrule Congress directly", "controls state judges"],
+    correct: 1,
+    hint: "Think about appointments, not confirmations.",
+    explain: "The president helps shape the judiciary through appointments, though the Senate must confirm them."
+  },
+  {
+    passage: "Congress refuses to appropriate enough funds for a president's new domestic initiative.",
+    stem: "This most clearly shows",
+    choices: ["the legislative branch checking the executive branch through the power of the purse", "judicial review", "state nullification", "executive privilege"],
+    correct: 0,
+    hint: "Which branch controls spending?",
+    explain: "Congress controls appropriations, so it can check executive plans by refusing or limiting funding."
+  },
+  {
+    passage: "A federal court orders the executive branch to stop enforcing a policy that violates constitutional rights.",
+    stem: "This is best described as",
+    choices: ["the executive checking the courts", "the judicial branch checking the executive branch", "Congress checking the states", "popular sovereignty"],
+    correct: 1,
+    hint: "Court order + executive policy = which branches?",
+    explain: "When courts block unconstitutional executive policies, the judicial branch is checking the executive branch."
+  },
+  {
+    passage: "The president calls Congress into a special session to consider urgent legislation.",
+    stem: "This action shows that the executive branch",
+    choices: ["can influence the legislative process", "can pass laws alone", "can remove senators from office", "can ignore Congress entirely"],
+    correct: 0,
+    hint: "Influence is not the same as total control.",
+    explain: "The president can call Congress into special session, which gives the executive branch influence, though not full lawmaking power."
+  },
+  {
+    passage: "Congress passes a law limiting the structure or jurisdiction of certain lower federal courts.",
+    stem: "This best demonstrates that the legislative branch",
+    choices: ["has no authority related to the judiciary", "can shape parts of the federal judicial system", "can overrule the Constitution", "can appoint judges directly"],
+    correct: 1,
+    hint: "Think about Congress and lower federal courts.",
+    explain: "Congress has major authority over the organization and jurisdiction of lower federal courts."
+  },
+  {
+    passage: "The Supreme Court rules that a state law conflicts with the U.S. Constitution and therefore cannot stand.",
+    stem: "This action is an example of",
+    choices: ["judicial review", "executive privilege", "legislative oversight only", "direct election"],
+    correct: 0,
+    hint: "The key is court review of constitutionality.",
+    explain: "Judicial review allows courts to strike down laws that conflict with the Constitution."
+  },
+  {
+    passage: "The House begins an investigation into misconduct by executive officials and holds hearings to gather evidence.",
+    stem: "This is best described as",
+    choices: ["legislative oversight checking the executive branch", "judicial review", "executive enforcement", "state sovereignty"],
+    correct: 0,
+    hint: "Think about Congress monitoring executive action.",
+    explain: "Oversight hearings are one way the legislative branch checks and monitors the executive branch."
+  },
+  {
+    passage: "The Senate refuses to confirm a cabinet nominee chosen by the president.",
+    stem: "This action most clearly demonstrates",
+    choices: ["executive control of Congress", "judicial supremacy", "legislative confirmation power checking the executive branch", "a direct vote of the people"],
+    correct: 2,
+    hint: "Appointments often require Senate approval.",
+    explain: "The Senate's confirmation role is a legislative check on executive appointments."
+  },
+  {
+    passage: "Congress passes a statute in response to a court ruling in order to revise how a policy is handled within constitutional limits.",
+    stem: "This most clearly shows",
+    choices: ["branch interaction within checks and balances", "executive privilege only", "state nullification", "judicial enforcement only"],
+    correct: 0,
+    hint: "The branches can respond to one another, not just act separately.",
+    explain: "Checks and balances involves ongoing interaction, including legislative responses to judicial decisions."
+  },
+  {
+    passage: "A president grants a pardon to a person convicted of a federal crime.",
+    stem: "This action is an example of",
+    choices: ["legislative authority", "executive power affecting the judicial outcome", "judicial review", "state-level police power"],
+    correct: 1,
+    hint: "Pardons come from which branch?",
+    explain: "The pardon power allows the president to affect the outcome of federal criminal cases, interacting with the judicial system."
+  },
+  {
+    passage: "The Senate votes to approve a treaty after reviewing the president's international agreement.",
+    stem: "This illustrates",
+    choices: ["state control over foreign policy", "the legislative branch checking and participating in executive foreign policy", "judicial review", "direct democracy"],
+    correct: 1,
+    hint: "Treaties require approval from which chamber?",
+    explain: "The Senate's treaty approval role allows the legislative branch to check and participate in executive foreign policy."
+  },
+  {
+    passage: "The Supreme Court upholds a law passed by Congress after a constitutional challenge.",
+    stem: "This most clearly shows that the judicial branch",
+    choices: ["has a role in reviewing legislative acts", "cannot interact with Congress", "must always strike laws down", "writes laws itself"],
+    correct: 0,
+    hint: "The Court can uphold or strike laws after review.",
+    explain: "Judicial review includes both upholding and striking down laws after constitutional examination."
+  },
+  {
+    passage: "Congress removes funding for an executive program it opposes.",
+    stem: "This is best classified as",
+    choices: ["the legislative branch checking the executive branch through appropriations", "judicial review", "executive privilege", "a state constitutional convention"],
+    correct: 0,
+    hint: "Think money and spending authority.",
+    explain: "Congress uses appropriations to check executive priorities and programs."
+  },
+  {
+    passage: "A court orders Congress to stop enforcing a law in a way that violates constitutional protections.",
+    stem: "This action is an example of",
+    choices: ["the judicial branch checking the legislative branch", "the executive branch checking the legislature", "state nullification", "popular sovereignty only"],
+    correct: 0,
+    hint: "Which branch interprets the Constitution in cases?",
+    explain: "Courts can limit legislative actions that violate constitutional protections."
+  },
+  {
+    passage: "The House votes to impeach a cabinet official accused of serious abuses of office.",
+    stem: "This best demonstrates",
+    choices: ["legislative checking of executive officials", "executive control of Congress", "judicial supremacy", "state oversight of federal offices"],
+    correct: 0,
+    hint: "Impeachment starts in the House.",
+    explain: "The House's impeachment power is a legislative check on executive officials."
+  },
+  {
+    passage: "The president signs a bill passed by Congress into law.",
+    stem: "This action best demonstrates",
+    choices: ["a branch interaction required in the lawmaking process", "judicial review", "state legislative supremacy", "direct democracy"],
+    correct: 0,
+    hint: "This is not a check against Congress, but it is still part of branch interaction.",
+    explain: "The president's signature is part of the lawmaking process, showing interaction between the legislative and executive branches."
+  },
+  {
+    passage: "The Senate convicts and removes a federal judge after impeachment by the House.",
+    stem: "This is best described as",
+    choices: ["legislative checking of the judicial branch", "judicial checking of the executive branch", "executive checking of the judiciary", "state review of federal judges"],
+    correct: 0,
+    hint: "Think impeachment and removal of judges.",
+    explain: "The House and Senate can remove federal judges, which is a legislative check on the judicial branch."
+  },
+  {
+    passage: "The president nominates a new justice after the death of a Supreme Court member.",
+    stem: "This action most clearly shows that the executive branch",
+    choices: ["helps influence the future direction of the judiciary", "can remove sitting justices at will", "controls all lower state courts", "overrides the Constitution"],
+    correct: 0,
+    hint: "Appointments shape courts over time.",
+    explain: "By appointing judges and justices, the president can influence the long-term direction of the judiciary."
+  },
+  {
+    passage: "Congress passes a law, the president vetoes it, and then the Supreme Court later reviews a similar version for constitutionality.",
+    stem: "This sequence best illustrates",
+    choices: ["checks and balances among all three branches", "direct democracy", "state nullification", "executive supremacy"],
+    correct: 0,
+    hint: "More than one branch is interacting here.",
+    explain: "The sequence shows all three branches playing roles in limiting, revising, and reviewing government power."
+  },
+  {
+    passage: "The Senate rejects a treaty even though the president strongly supports it.",
+    stem: "This is best classified as",
+    choices: ["executive authority over the Senate", "legislative checking of executive foreign policy", "judicial review", "popular sovereignty"],
+    correct: 1,
+    hint: "Treaties are one of the Senate's major checks.",
+    explain: "The Senate can reject treaties, making this a legislative check on executive foreign policy."
+  },
+  {
+    passage: "Congress investigates how executive agencies are carrying out federal laws and demands testimony from officials.",
+    stem: "This action most clearly represents",
+    choices: ["legislative oversight", "judicial review", "executive privilege", "federalism"],
+    correct: 0,
+    hint: "This is Congress monitoring implementation.",
+    explain: "Legislative oversight is a key way Congress checks the executive branch and how laws are carried out."
+  }
+];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function formatTime(seconds){
+  const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
+}
+
+function formatStamp(d){
+  return d.toLocaleString();
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
+const APP = document.getElementById("app");
+
+let studentName = "";
+let startedAt = null;
+let timer = null;
+let elapsed = 0;
+
+let questions = [];
+let current = 0;
+let misses = 0;
+let attempts = 0;
+let locked = false;
+let awaitingCorrection = false;
+
+function buildQuestionBank(){
+  return QUESTIONS.map((q, idx) => {
+    const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+    const remappedChoices = order.map(x => x.choice);
+    const newCorrect = order.findIndex(x => x.originalIndex === q.correct);
+    return { ...q, id: idx + 1, choices: remappedChoices, correct: newCorrect };
+  });
+}
+
+function startScreen(){
+  APP.innerHTML = `
+    <div class="start-card">
+      <h2>Enter your name to begin</h2>
+      <p>
+        Mastery rules: auto-advance on correct, hint on miss, and you must correct missed items before moving forward.
+      </p>
+      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
+      <button class="btn" id="startBtn">Start Game</button>
+      <hr class="sep">
+      <p class="note">Your ticket will show name, date, start time, runtime, accuracy, attempts, and result.</p>
+    </div>
+  `;
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if(!name){
+      alert("Please enter your name before starting.");
+      return;
+    }
+    studentName = name;
+    startedAt = new Date();
+    elapsed = 0;
+    current = 0;
+    misses = 0;
+    attempts = 0;
+    locked = false;
+    awaitingCorrection = false;
+    questions = buildQuestionBank();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed++;
+      const rt = document.getElementById("runtime");
+      if(rt) rt.textContent = formatTime(elapsed);
+    }, 1000);
+
+    renderQuestion();
+  });
+}
+
+function renderQuestion(feedbackHtml = ""){
+  const q = questions[current];
+  const progressPct = Math.round((current / questions.length) * 100);
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+
+  APP.innerHTML = `
+    <div class="game-wrap">
+      <div class="hud">
+        <div class="stat">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value">${accuracy}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Attempts</div>
+          <div class="stat-value">${attempts}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Runtime</div>
+          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Started</div>
+          <div class="stat-value">${formatStamp(startedAt)}</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-meta">Question ${current + 1} of ${questions.length}</div>
+        <div class="passage">${escapeHtml(q.passage)}</div>
+        <div class="stem">${escapeHtml(q.stem)}</div>
+
+        <div class="choices" id="choices"></div>
+
+        ${feedbackHtml}
+
+        <div class="controls">
+          <button class="btn secondary" id="restartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+
+  const choicesEl = document.getElementById("choices");
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(choice)}`;
+    btn.addEventListener("click", () => submitSingle(i));
+    choicesEl.appendChild(btn);
+  });
+}
+
+function submitSingle(selected){
+  if(locked) return;
+  locked = true;
+  attempts++;
+
+  const q = questions[current];
+  const correct = selected === q.correct;
+
+  if(correct){
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Correct</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    misses++;
+    awaitingCorrection = true;
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Not yet</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function retrySingle(selected){
+  if(!awaitingCorrection) return;
+  const q = questions[current];
+  if(selected === q.correct){
+    awaitingCorrection = false;
+    locked = true;
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Corrected</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Try again</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function nextQuestion(){
+  locked = false;
+  awaitingCorrection = false;
+  current++;
+  if(current >= questions.length){
+    finishGame();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishGame(){
+  clearInterval(timer);
+  const finishedAt = new Date();
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+  const passed = misses === 0 ? "MASTERED" : "REPLAY";
+
+  APP.innerHTML = `
+    <div class="ticket">
+      <h2>Submission Ticket</h2>
+      <p class="sub">Turn this in to show completion.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-item">
+          <div class="label">Name</div>
+          <div class="value">${escapeHtml(studentName)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Date</div>
+          <div class="value">${finishedAt.toLocaleDateString()}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Started</div>
+          <div class="value">${formatStamp(startedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Finished</div>
+          <div class="value">${formatStamp(finishedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Runtime</div>
+          <div class="value">${formatTime(elapsed)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Accuracy</div>
+          <div class="value">${accuracy}%</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Attempts</div>
+          <div class="value">${attempts}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Result</div>
+          <div class="value">${passed}</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playAgain">Play Again</button>
+        <a class="btn secondary" href="../index.html">Back to Hub</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("playAgain").addEventListener("click", hardRestart);
+}
+
+function hardRestart(){
+  if(timer) clearInterval(timer);
+  studentName = "";
+  startedAt = null;
+  elapsed = 0;
+  current = 0;
+  misses = 0;
+  attempts = 0;
+  locked = false;
+  awaitingCorrection = false;
+  startScreen();
+}
+
+startScreen();
+</script>
+</body>
+</html>
