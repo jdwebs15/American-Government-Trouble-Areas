@@ -1,317 +1,577 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Game 2 — Federalists vs Anti-Federalists</title>
-<link rel="stylesheet" href="../styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game 2 — Federalists vs Anti-Federalists</title>
+  <link rel="stylesheet" href="../styles.css" />
 </head>
-
 <body>
-<div class="wrap">
-<a class="back-link" href="../index.html">← Back to Hub</a>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">← Back to Hub</a>
 
-<header class="hero">
-<div class="kicker">Legend Mastery Series • American Government</div>
-<h1>Game 2 — Federalists vs Anti-Federalists</h1>
-<p class="sub">Passage-based mastery. Identify arguments, fears, and support for ratification.</p>
+    <header class="hero">
+      <div class="kicker">Legend Mastery Series • American Government</div>
+      <h1>Game 2 — Federalists vs Anti-Federalists</h1>
+      <p class="sub">
+        Passage-based mastery on arguments, fears, ratification, and the debate over the Constitution.
+      </p>
+      <div class="pills">
+        <span class="pill">30 Questions</span>
+        <span class="pill">Passage-Based</span>
+        <span class="pill">Auto-submit</span>
+        <span class="pill">Hint on Miss</span>
+        <span class="pill">Forced Correction</span>
+        <span class="pill">Submission Ticket</span>
+      </div>
+    </header>
 
-<div class="pills">
-<span class="pill">30 Questions</span>
-<span class="pill">Passage-Based</span>
-<span class="pill">Auto-advance</span>
-<span class="pill">Hint on miss</span>
-<span class="pill">100% required</span>
-</div>
-</header>
-
-<div id="app"></div>
-</div>
+    <div id="app"></div>
+  </div>
 
 <script>
 const QUESTIONS = [
-
-{ passage:"The proposed Constitution creates a strong central government that will maintain order.",
-stem:"This reflects which group?",
-choices:["Anti-Federalists","Federalists","States","Local governments"],
-answer:1,
-hint:"Support strong national government.",
-explain:"Federalists supported a stronger central government."},
-
-{ passage:"The Constitution lacks protections for individual rights.",
-stem:"Who argued this?",
-choices:["Federalists","Judges","Anti-Federalists","Governors"],
-answer:2,
-hint:"Think Bill of Rights.",
-explain:"Anti-Federalists wanted protections added."},
-
-{ passage:"A large republic prevents factions from dominating.",
-stem:"This supports which side?",
-choices:["Anti-Federalists","Federalists","Local leaders","Citizens"],
-answer:1,
-hint:"Federalist No. 10 idea.",
-explain:"Federalists argued large republic = stability."},
-
-{ passage:"Power should remain with states.",
-stem:"This reflects",
-choices:["Federalists","Anti-Federalists","Courts","Congress"],
-answer:1,
-hint:"Fear of central government.",
-explain:"Anti-Federalists favored states."},
-
-{ passage:"Separation of powers prevents tyranny.",
-stem:"This supports",
-choices:["Anti-Federalists","Federalists","Local gov","Judges"],
-answer:1,
-hint:"Trust in system.",
-explain:"Federalists trusted structure."},
-
-{ passage:"Strong executive could become a king.",
-stem:"This concern is from",
-choices:["Federalists","Anti-Federalists","Courts","Senate"],
-answer:1,
-hint:"Fear of president power.",
-explain:"Anti-Federalists feared monarchy."},
-
-{ passage:"National government should regulate trade.",
-stem:"Federalists saw this as",
-choices:["Weakness","Strength","Unnecessary","Illegal"],
-answer:1,
-hint:"Fixing Articles problems.",
-explain:"Federalists wanted economic unity."},
-
-{ passage:"Without rights listed, freedoms are at risk.",
-stem:"This reflects",
-choices:["Federalists","Anti-Federalists","States","Judges"],
-answer:1,
-hint:"Bill of Rights issue.",
-explain:"Anti-Federalists demanded protections."},
-
-{ passage:"Government power is divided between state and national.",
-stem:"This concept is",
-choices:["Federalism","Democracy","Judicial review","Liberty"],
-answer:0,
-hint:"Power split.",
-explain:"Federalism divides power."},
-
-{ passage:"National defense requires strong central authority.",
-stem:"Supports",
-choices:["Anti-Federalists","Federalists","States","Local gov"],
-answer:1,
-hint:"Think army.",
-explain:"Federalists supported national defense."},
-
-{ passage:"Small republics protect liberty better.",
-stem:"This supports",
-choices:["Federalists","Anti-Federalists","Courts","Congress"],
-answer:1,
-hint:"Small government preference.",
-explain:"Anti-Federalists preferred small republics."},
-
-{ passage:"Checks and balances protect freedom.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Citizens","States"],
-answer:0,
-hint:"Trust system.",
-explain:"Federalists supported structure."},
-
-{ passage:"Bill of Rights must be added.",
-stem:"This reflects",
-choices:["Federalists","Anti-Federalists","Courts","Judges"],
-answer:1,
-hint:"Rights demand.",
-explain:"Anti-Federalists insisted on protections."},
-
-{ passage:"National government too weak under Articles.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Judges"],
-answer:0,
-hint:"Fix weakness.",
-explain:"Federalists wanted stronger gov."},
-
-{ passage:"Central power threatens liberty.",
-stem:"This is",
-choices:["Federalist view","Anti-Federalist view","Judicial view","State view"],
-answer:1,
-hint:"Fear argument.",
-explain:"Anti-Federalists feared tyranny."},
-
-{ passage:"Large republic dilutes factions.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Courts"],
-answer:0,
-hint:"Federalist 10 again.",
-explain:"Federalists supported size."},
-
-{ passage:"People need explicit rights protections.",
-stem:"Who argued this?",
-choices:["Federalists","Anti-Federalists","Congress","Courts"],
-answer:1,
-hint:"Bill of Rights.",
-explain:"Anti-Federalists demanded it."},
-
-{ passage:"Strong union prevents conflict between states.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Local gov","Judges"],
-answer:0,
-hint:"National unity.",
-explain:"Federalists wanted unity."},
-
-{ passage:"Executive power must be limited.",
-stem:"This reflects",
-choices:["Federalists","Anti-Federalists","Courts","States"],
-answer:1,
-hint:"Fear executive.",
-explain:"Anti-Federalists feared president."},
-
-{ passage:"Constitution balances power effectively.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Local gov","Citizens"],
-answer:0,
-hint:"Trust system.",
-explain:"Federalists supported design."},
-
-{ passage:"Government should be closer to people.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Courts","Senate"],
-answer:1,
-hint:"Local control.",
-explain:"Anti-Federalists favored local power."},
-
-{ passage:"National government ensures stability.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Courts"],
-answer:0,
-hint:"Strong gov.",
-explain:"Federalists valued stability."},
-
-{ passage:"Rights must be protected explicitly.",
-stem:"Reflects",
-choices:["Federalists","Anti-Federalists","Judges","Congress"],
-answer:1,
-hint:"Rights concern.",
-explain:"Anti-Federalists wanted Bill of Rights."},
-
-{ passage:"Checks prevent abuse of power.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Citizens"],
-answer:0,
-hint:"Structure trust.",
-explain:"Federalists trusted system."},
-
-{ passage:"Large government removes citizen voice.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Courts","Senate"],
-answer:1,
-hint:"Fear size.",
-explain:"Anti-Federalists feared distance."},
-
-{ passage:"Stronger central authority needed.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Courts"],
-answer:0,
-hint:"Fix Articles.",
-explain:"Federalists wanted stronger gov."},
-
-{ passage:"Liberty is safer in small systems.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Courts","Congress"],
-answer:1,
-hint:"Small gov.",
-explain:"Anti-Federalists preferred small scale."},
-
-{ passage:"Constitution creates balance.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","Citizens","States"],
-answer:0,
-hint:"System design.",
-explain:"Federalists supported structure."},
-
-{ passage:"Government must not overpower citizens.",
-stem:"Reflects",
-choices:["Federalists","Anti-Federalists","Courts","Judges"],
-answer:1,
-hint:"Fear power.",
-explain:"Anti-Federalists feared abuse."},
-
-{ passage:"National unity requires strong government.",
-stem:"Supports",
-choices:["Federalists","Anti-Federalists","States","Courts"],
-answer:0,
-hint:"Unity argument.",
-explain:"Federalists supported unity."}
-
+  {
+    passage: "The proposed Constitution creates a stronger national government that can better maintain order, provide for defense, and solve the weaknesses of the Articles of Confederation.",
+    stem: "This passage most closely reflects the views of",
+    choices: ["Anti-Federalists", "Federalists", "A state governor resisting taxes", "Supporters of nullification"],
+    correct: 1,
+    hint: "Think about which group wanted a stronger national government after the Articles proved too weak.",
+    explain: "Federalists supported the Constitution because they believed the national government needed enough power to provide order, security, and stability."
+  },
+  {
+    passage: "The Constitution lacks a clear list of protections for speech, religion, press, and other liberties. Without those protections, the national government could become abusive.",
+    stem: "Which group would be most likely to agree with this statement?",
+    choices: ["Federalists", "Anti-Federalists", "Supreme Court justices", "Supporters of the elastic clause"],
+    correct: 1,
+    hint: "Focus on which group most strongly demanded a Bill of Rights.",
+    explain: "Anti-Federalists feared the new national government could threaten liberty unless specific protections for individual rights were added."
+  },
+  {
+    passage: "A large republic makes it harder for any one faction to dominate because many interests compete with one another across a broad nation.",
+    stem: "This argument most directly supports the position of the",
+    choices: ["Anti-Federalists", "Federalists", "Confederate states", "Local political machines"],
+    correct: 1,
+    hint: "This is tied to the argument from Federalist No. 10.",
+    explain: "Federalists argued that a large republic could better control the effects of factions than a small republic could."
+  },
+  {
+    passage: "Power should remain primarily with the states because government works best when it remains close to the people and responsive to local needs.",
+    stem: "This statement reflects the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of judicial review", "Advocates of a national bank"],
+    correct: 1,
+    hint: "Which side feared distant centralized power and preferred state authority?",
+    explain: "Anti-Federalists preferred stronger state governments and feared a powerful, distant national government."
+  },
+  {
+    passage: "The Constitution divides power among separate branches, and each branch has ways to limit the others so that no single part of government can become tyrannical.",
+    stem: "This is an argument most often used by",
+    choices: ["Anti-Federalists", "Federalists", "Supporters of direct democracy", "Opponents of ratification"],
+    correct: 1,
+    hint: "Think about which group trusted the structure of checks and balances.",
+    explain: "Federalists argued that separation of powers and checks and balances would protect liberty by limiting government abuse."
+  },
+  {
+    passage: "A strong executive might begin to resemble a monarch, especially if the office gains control over the military and administration.",
+    stem: "Who would be most likely to raise this concern?",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of implied powers", "The House of Representatives"],
+    correct: 1,
+    hint: "Think about which group worried the presidency could become too powerful.",
+    explain: "Anti-Federalists feared that a strong executive could turn into something resembling monarchy."
+  },
+  {
+    passage: "The national government must be able to regulate commerce among the states so that the economy can function under a more unified system.",
+    stem: "Federalists would most likely describe this power as",
+    choices: ["A danger to liberty", "A necessary strength", "A violation of the Bill of Rights", "A purely state responsibility"],
+    correct: 1,
+    hint: "Think about what problems the Articles had with trade and economic coordination.",
+    explain: "Federalists supported stronger national powers over trade because they believed a united economy required national coordination."
+  },
+  {
+    passage: "Without a Bill of Rights, the Constitution leaves freedoms vulnerable to abuse by those in power.",
+    stem: "This argument was most strongly associated with the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of loose construction", "Advocates of judicial supremacy"],
+    correct: 1,
+    hint: "Which group demanded explicit protections for liberties before trusting the new government?",
+    explain: "Anti-Federalists insisted on written protections for basic liberties, which later became the Bill of Rights."
+  },
+  {
+    passage: "The Constitution balances authority between the national government and the states, rather than placing all power in one level of government.",
+    stem: "This passage best describes the principle of",
+    choices: ["Judicial review", "Popular sovereignty", "Federalism", "Direct election"],
+    correct: 2,
+    hint: "This principle is about dividing power between national and state governments.",
+    explain: "Federalism is the division of power between the national government and the states."
+  },
+  {
+    passage: "The country cannot remain secure if the central government lacks the ability to raise troops, provide defense, and respond to external threats.",
+    stem: "Which group would most likely support this reasoning?",
+    choices: ["Anti-Federalists", "Federalists", "Opponents of ratification", "Supporters of nullification"],
+    correct: 1,
+    hint: "Think about which side argued the nation needed more strength and unity.",
+    explain: "Federalists believed a stronger national government was necessary for defense and national security."
+  },
+  {
+    passage: "In a small republic, the people know their leaders more directly, and government remains closer to the citizens it serves.",
+    stem: "This argument best supports the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of commercial expansion", "Nationalists"],
+    correct: 1,
+    hint: "Which group preferred smaller political units and local control?",
+    explain: "Anti-Federalists believed liberty was safer in smaller republics where government remained closer to the people."
+  },
+  {
+    passage: "The proposed Constitution should be ratified because its structure itself guards liberty, even before a separate bill of rights is added.",
+    stem: "This position most clearly reflects the views of the",
+    choices: ["Anti-Federalists", "Federalists", "State nullifiers", "Supporters of secession"],
+    correct: 1,
+    hint: "Which group trusted the Constitution's structure to prevent tyranny?",
+    explain: "Federalists often argued that the Constitution's structure, including checks and balances, already protected liberty."
+  },
+  {
+    passage: "The people need direct, written assurances that government will not interfere with religion, speech, and other liberties.",
+    stem: "This statement most likely came from the",
+    choices: ["Federalists", "Anti-Federalists", "Supremacy Clause supporters", "Judicial nationalists"],
+    correct: 1,
+    hint: "Which side wanted explicit rights protections before accepting the new Constitution?",
+    explain: "Anti-Federalists feared liberty would be insecure without written protections for individual rights."
+  },
+  {
+    passage: "The Articles of Confederation left the national government too weak to solve economic and political problems among the states.",
+    stem: "This criticism would most likely be made by the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of strict localism", "Critics of the presidency only"],
+    correct: 0,
+    hint: "Which group wanted to replace the Articles with a stronger system?",
+    explain: "Federalists criticized the Articles of Confederation as too weak and supported the Constitution as a stronger framework."
+  },
+  {
+    passage: "A distant central government may eventually use its power to threaten liberty, tax unfairly, and ignore the will of local communities.",
+    stem: "This concern is most closely associated with the",
+    choices: ["Federalists", "Anti-Federalists", "Advocates of national supremacy only", "Supporters of broad implied powers only"],
+    correct: 1,
+    hint: "Which side feared centralized power as a threat to freedom?",
+    explain: "Anti-Federalists feared that the new national government could become too distant and too powerful."
+  },
+  {
+    passage: "The diversity of interests across a large nation helps prevent any one interest group from easily oppressing others.",
+    stem: "This argument most strongly supports the position of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of state supremacy", "Critics of republican government"],
+    correct: 0,
+    hint: "This is another argument tied to the benefits of a large republic.",
+    explain: "Federalists argued that a large republic would make it harder for one faction to dominate the whole system."
+  },
+  {
+    passage: "The people should not trust government with broad authority unless their rights are specifically protected in writing.",
+    stem: "Who would most likely agree with this claim?",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of an electoral college only", "Advocates of executive privilege"],
+    correct: 1,
+    hint: "Think about which side pressed hardest for a Bill of Rights.",
+    explain: "Anti-Federalists believed individual rights had to be protected explicitly before government could be trusted."
+  },
+  {
+    passage: "A stronger union is necessary to prevent conflict among states and to create a more stable national system.",
+    stem: "This passage best supports the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of state nullification", "Opponents of national taxation under any circumstances"],
+    correct: 0,
+    hint: "Which side believed national unity required a stronger central framework?",
+    explain: "Federalists believed the Constitution would create a more stable and effective union than the Articles had created."
+  },
+  {
+    passage: "Executive authority must be watched carefully because a powerful executive office may endanger liberty.",
+    stem: "This argument would most likely be made by the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of broad executive power", "Backers of judicial supremacy"],
+    correct: 1,
+    hint: "Which group was especially suspicious of a strong presidency?",
+    explain: "Anti-Federalists often worried that the executive branch might grow too powerful and threaten freedom."
+  },
+  {
+    passage: "The Constitution should be adopted because it creates a system strong enough to govern but restrained enough to avoid tyranny.",
+    stem: "This reasoning most clearly reflects the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of unrestricted state power", "Opponents of republican government"],
+    correct: 0,
+    hint: "Which side argued the Constitution struck the right balance between strength and restraint?",
+    explain: "Federalists argued that the Constitution gave government enough strength to function while still limiting it through structure."
+  },
+  {
+    passage: "Liberty is safer when officials remain closer to the people and when local communities keep significant authority over public affairs.",
+    stem: "Which group would most likely support this statement?",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of consolidated national rule", "Backers of unlimited implied powers"],
+    correct: 1,
+    hint: "This is the side that preferred stronger state and local control.",
+    explain: "Anti-Federalists believed liberty was better protected when government remained local and close to citizens."
+  },
+  {
+    passage: "The national government must have enough authority to manage finance, regulate interstate matters, and preserve order throughout the union.",
+    stem: "This argument most likely came from the",
+    choices: ["Federalists", "Anti-Federalists", "Opponents of all taxation", "Supporters of secession"],
+    correct: 0,
+    hint: "Which side wanted the national government to be effective rather than weak?",
+    explain: "Federalists supported stronger national powers because they believed the government needed enough authority to govern effectively."
+  },
+  {
+    passage: "A written list of rights is essential because people should not rely only on the good intentions of those in government.",
+    stem: "This argument is most closely associated with the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of a national bank", "Advocates of judicial restraint"],
+    correct: 1,
+    hint: "Which side distrusted broad government power unless rights were explicitly protected?",
+    explain: "Anti-Federalists did not want liberty to depend solely on government structure or the promises of leaders."
+  },
+  {
+    passage: "If each branch has constitutional tools to limit the others, abuse of power becomes less likely.",
+    stem: "Which side most often used this argument to support ratification?",
+    choices: ["Anti-Federalists", "Federalists", "Opponents of republicanism", "Supporters of local-only government"],
+    correct: 1,
+    hint: "Which group defended the Constitution's internal design?",
+    explain: "Federalists argued that checks and balances would reduce the danger of tyranny."
+  },
+  {
+    passage: "A government spread over a vast territory will be too far removed from ordinary citizens and will become less accountable to them.",
+    stem: "This concern would most likely come from the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of a standing army", "Judicial nationalists"],
+    correct: 1,
+    hint: "Which side feared that large national scale meant weaker accountability?",
+    explain: "Anti-Federalists argued that a large republic would be too distant from the people and less responsive to them."
+  },
+  {
+    passage: "The problems under the Articles proved that the nation needed more than a loose alliance of states.",
+    stem: "Who would most likely make this argument?",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of nullification", "Opponents of interstate commerce regulation"],
+    correct: 0,
+    hint: "Which group believed the Articles were too weak?",
+    explain: "Federalists used the failures of the Articles of Confederation as a major argument for ratification."
+  },
+  {
+    passage: "Freedom is best protected when power is not gathered into one distant national authority.",
+    stem: "This passage best reflects the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of executive expansion", "Advocates of unlimited federal supremacy"],
+    correct: 1,
+    hint: "This side feared consolidation of power.",
+    explain: "Anti-Federalists feared that concentrated national power could threaten liberty."
+  },
+  {
+    passage: "The Constitution's design provides enough structure to govern a large nation while still dividing power among institutions and levels of government.",
+    stem: "This idea would most strongly appeal to the",
+    choices: ["Federalists", "Anti-Federalists", "Opponents of national unity", "Supporters of direct democracy only"],
+    correct: 0,
+    hint: "Which side believed the Constitution successfully balanced strength and restraint?",
+    explain: "Federalists supported the Constitution because they believed it created an effective but limited government."
+  },
+  {
+    passage: "Government must never grow so large that it overwhelms the freedoms of ordinary citizens.",
+    stem: "This concern is most closely linked to the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of broad construction only", "Champions of national consolidation"],
+    correct: 1,
+    hint: "Which group worried most about liberty being threatened by national power?",
+    explain: "Anti-Federalists were deeply concerned that a strong central government could endanger individual liberty."
+  },
+  {
+    passage: "Only a stronger union can provide national stability, economic coordination, and effective government over the whole country.",
+    stem: "This argument most directly supports the views of the",
+    choices: ["Federalists", "Anti-Federalists", "Supporters of localism only", "Opponents of ratification"],
+    correct: 0,
+    hint: "Which side wanted a stronger national framework than the Articles provided?",
+    explain: "Federalists supported ratification because they believed national stability required a stronger union."
+  }
 ];
 
 function shuffle(arr){
-return arr.sort(()=>Math.random()-0.5);
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-let current=0, attempts=0, correct=0, startTime, timer;
-
-function startGame(){
-startTime=Date.now();
-timer=setInterval(()=>{
-document.getElementById("time").textContent =
-Math.floor((Date.now()-startTime)/1000)+"s";
-},1000);
-render();
+function formatTime(seconds){
+  const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
 }
 
-function render(){
-const q=QUESTIONS[current];
-
-document.getElementById("app").innerHTML=`
-<div class="question-card">
-<div class="passage">${q.passage}</div>
-<div class="stem">${q.stem}</div>
-
-<div class="choices">
-${shuffle(q.choices).map((c,i)=>`<button class="choice" onclick="submit('${c}')">${c}</button>`).join("")}
-</div>
-
-<div class="small">Time: <span id="time">0s</span></div>
-</div>`;
+function formatStamp(d){
+  return d.toLocaleString();
 }
 
-function submit(choice){
-const q=QUESTIONS[current];
-attempts++;
-
-if(choice===q.choices[q.answer]){
-correct++;
-setTimeout(next,5000);
-}else{
-alert(q.hint);
-}
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
 }
 
-function next(){
-current++;
-if(current>=QUESTIONS.length){
-endGame();
-}else{
-render();
-}
+const APP = document.getElementById("app");
+
+let studentName = "";
+let startedAt = null;
+let timer = null;
+let elapsed = 0;
+
+let questions = [];
+let current = 0;
+let misses = 0;
+let attempts = 0;
+let locked = false;
+let awaitingCorrection = false;
+
+function buildQuestionBank(){
+  return QUESTIONS.map((q, idx) => {
+    const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+    const remappedChoices = order.map(x => x.choice);
+    const newCorrect = order.findIndex(x => x.originalIndex === q.correct);
+    return { ...q, id: idx + 1, choices: remappedChoices, correct: newCorrect };
+  });
 }
 
-function endGame(){
-clearInterval(timer);
-document.getElementById("app").innerHTML=`
-<div class="ticket">
-<h2>Submission Ticket</h2>
-<p>Score: ${correct}/30</p>
-<p>Attempts: ${attempts}</p>
-</div>`;
+function startScreen(){
+  APP.innerHTML = `
+    <div class="start-card">
+      <h2>Enter your name to begin</h2>
+      <p>
+        Mastery rules: auto-advance on correct, hint on miss, and you must correct missed items before moving forward.
+      </p>
+      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
+      <button class="btn" id="startBtn">Start Game</button>
+      <hr class="sep">
+      <p class="note">Your ticket will show name, date, start time, runtime, accuracy, attempts, and result.</p>
+    </div>
+  `;
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if(!name){
+      alert("Please enter your name before starting.");
+      return;
+    }
+    studentName = name;
+    startedAt = new Date();
+    elapsed = 0;
+    current = 0;
+    misses = 0;
+    attempts = 0;
+    locked = false;
+    awaitingCorrection = false;
+    questions = buildQuestionBank();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed++;
+      const rt = document.getElementById("runtime");
+      if(rt) rt.textContent = formatTime(elapsed);
+    }, 1000);
+
+    renderQuestion();
+  });
 }
 
-document.getElementById("app").innerHTML=`
-<div class="start-card">
-<h2>Enter Name</h2>
-<input id="name">
-<button class="btn" onclick="startGame()">Start</button>
-</div>`;
+function renderQuestion(feedbackHtml = ""){
+  const q = questions[current];
+  const progressPct = Math.round((current / questions.length) * 100);
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+
+  APP.innerHTML = `
+    <div class="game-wrap">
+      <div class="hud">
+        <div class="stat">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value">${accuracy}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Attempts</div>
+          <div class="stat-value">${attempts}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Runtime</div>
+          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Started</div>
+          <div class="stat-value">${formatStamp(startedAt)}</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-meta">Question ${current + 1} of ${questions.length}</div>
+        <div class="passage">${escapeHtml(q.passage)}</div>
+        <div class="stem">${escapeHtml(q.stem)}</div>
+
+        <div class="choices" id="choices"></div>
+
+        ${feedbackHtml}
+
+        <div class="controls">
+          <button class="btn secondary" id="restartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+
+  const choicesEl = document.getElementById("choices");
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(choice)}`;
+    btn.addEventListener("click", () => submitSingle(i));
+    choicesEl.appendChild(btn);
+  });
+}
+
+function submitSingle(selected){
+  if(locked) return;
+  locked = true;
+  attempts++;
+
+  const q = questions[current];
+  const correct = selected === q.correct;
+
+  if(correct){
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Correct</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    misses++;
+    awaitingCorrection = true;
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Not yet</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function retrySingle(selected){
+  if(!awaitingCorrection) return;
+  const q = questions[current];
+  if(selected === q.correct){
+    awaitingCorrection = false;
+    locked = true;
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Corrected</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Try again</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function nextQuestion(){
+  locked = false;
+  awaitingCorrection = false;
+  current++;
+  if(current >= questions.length){
+    finishGame();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishGame(){
+  clearInterval(timer);
+  const finishedAt = new Date();
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+  const passed = misses === 0 ? "MASTERED" : "REPLAY";
+
+  APP.innerHTML = `
+    <div class="ticket">
+      <h2>Submission Ticket</h2>
+      <p class="sub">Turn this in to show completion.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-item">
+          <div class="label">Name</div>
+          <div class="value">${escapeHtml(studentName)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Date</div>
+          <div class="value">${finishedAt.toLocaleDateString()}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Started</div>
+          <div class="value">${formatStamp(startedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Finished</div>
+          <div class="value">${formatStamp(finishedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Runtime</div>
+          <div class="value">${formatTime(elapsed)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Accuracy</div>
+          <div class="value">${accuracy}%</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Attempts</div>
+          <div class="value">${attempts}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Result</div>
+          <div class="value">${passed}</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playAgain">Play Again</button>
+        <a class="btn secondary" href="../index.html">Back to Hub</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("playAgain").addEventListener("click", hardRestart);
+}
+
+function hardRestart(){
+  if(timer) clearInterval(timer);
+  studentName = "";
+  startedAt = null;
+  elapsed = 0;
+  current = 0;
+  misses = 0;
+  attempts = 0;
+  locked = false;
+  awaitingCorrection = false;
+  startScreen();
+}
+
+startScreen();
 </script>
-
 </body>
 </html>
