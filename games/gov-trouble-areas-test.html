@@ -20,10 +20,11 @@
     .dropdown-line select{
       background:#111831;color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:0 6px
     }
-    .qa-part{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
-    .small-muted{color:var(--muted);font-size:.92rem}
     .submit-row{margin-top:14px}
     .mono{font-family:Consolas,Menlo,monospace}
+    .top-test-controls{
+      display:flex;justify-content:flex-end;gap:12px;margin:8px 0 14px;flex-wrap:wrap
+    }
   </style>
 </head>
 <body>
@@ -53,8 +54,11 @@
 /* =========================
    CONFIG
 ========================= */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjnbdxuevmbckIVGB921QYKsC8qbuAtLPfE8_G3fNF7RNHIXJvwHYlzujbVFeyQo22/exec";
-const TEST_KEY = "gov_trouble_areas_test_v2";
+/* IMPORTANT:
+   Use the /exec web app URL here, not /dev.
+*/
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZA64H-Hq0yQ3AYORsUeN1d7uoNFYVpvQfBwraO8c/exec";
+const TEST_KEY = "gov_trouble_areas_test_v3";
 const PASS_PERCENT = 80;
 
 /* =========================
@@ -809,9 +813,9 @@ let current = 0;
 let score = 0;
 let locked = false;
 let selectedMulti = new Set();
-let currentDropState = null;
 let wrongQuestionIds = [];
 let detailedResults = [];
+let answeredCount = 0;
 
 /* =========================
    BUILD BANK
@@ -849,7 +853,7 @@ function startScreen(){
       <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
       <button class="btn" id="startBtn">Start Test</button>
       <hr class="sep">
-      <p class="note">This test tracks attempts, timestamps, percent, missed stems, and weak-area tags.</p>
+      <p class="note">Use the Submit Test button during the test if you want to test your Apps Script after only a few questions.</p>
     </div>
   `;
 
@@ -869,9 +873,9 @@ function startScreen(){
     score = 0;
     locked = false;
     selectedMulti = new Set();
-    currentDropState = null;
     wrongQuestionIds = [];
     detailedResults = [];
+    answeredCount = 0;
     questions = buildQuestionBank();
 
     if(timer) clearInterval(timer);
@@ -891,7 +895,7 @@ function startScreen(){
 function renderQuestion(feedbackHtml = ""){
   const q = questions[current];
   const progressPct = Math.round((current / questions.length) * 100);
-  const percent = Math.round((score / Math.max(current,1)) * 100);
+  const percent = answeredCount === 0 ? 0 : Math.round((score / answeredCount) * 100);
 
   APP.innerHTML = `
     <div class="game-wrap">
@@ -899,6 +903,10 @@ function renderQuestion(feedbackHtml = ""){
         <div class="stat">
           <div class="stat-label">Progress</div>
           <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Answered</div>
+          <div class="stat-value">${answeredCount}</div>
         </div>
         <div class="stat">
           <div class="stat-label">Correct</div>
@@ -916,14 +924,15 @@ function renderQuestion(feedbackHtml = ""){
           <div class="stat-label">Runtime</div>
           <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
         </div>
-        <div class="stat">
-          <div class="stat-label">Started</div>
-          <div class="stat-value">${formatStamp(startedAt)}</div>
-        </div>
       </div>
 
       <div class="progress">
         <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="top-test-controls">
+        <button class="btn good" id="submitTestBtn">Submit Test</button>
+        <button class="btn secondary" id="restartBtn">Restart Test</button>
       </div>
 
       <div class="question-card">
@@ -932,14 +941,26 @@ function renderQuestion(feedbackHtml = ""){
         <div class="stem">${escapeHtml(q.stem)}</div>
         <div id="responseArea"></div>
         ${feedbackHtml}
-        <div class="controls">
-          <button class="btn secondary" id="restartBtn">Restart Test</button>
-        </div>
       </div>
     </div>
   `;
 
-  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    if(confirm("Restart the entire test? This will clear the current attempt on screen.")){
+      hardRestart();
+    }
+  });
+
+  document.getElementById("submitTestBtn").addEventListener("click", async () => {
+    const remaining = questions.length - answeredCount;
+    const msg = remaining > 0
+      ? `You have answered ${answeredCount} of ${questions.length} questions. Submit now anyway?`
+      : "Submit test now?";
+    if(confirm(msg)){
+      await finishTest(true);
+    }
+  });
+
   renderResponseArea(q);
 }
 
@@ -1076,16 +1097,16 @@ function recordResult(q, isCorrect, studentAnswer){
     correct: isCorrect,
     studentAnswer
   });
+  answeredCount++;
   if(!isCorrect) wrongQuestionIds.push(q.id);
 }
 
 function nextQuestion(){
   locked = false;
   selectedMulti = new Set();
-  currentDropState = null;
   current++;
   if(current >= questions.length){
-    finishTest();
+    finishTest(false);
   } else {
     renderQuestion();
   }
@@ -1107,14 +1128,9 @@ function submitSingle(selected){
   const isCorrect = selected === q.renderCorrect;
   recordResult(q, isCorrect, q.renderChoices[selected]);
 
-  if(isCorrect){
-    score++;
-    renderQuestion(feedbackBlock("good", "Correct", q.explain));
-    setTimeout(nextQuestion, 5000);
-  } else {
-    renderQuestion(feedbackBlock("bad", "Incorrect", `${q.hint} Correct answer: ${q.renderChoices[q.renderCorrect]}`));
-    setTimeout(nextQuestion, 5000);
-  }
+  if(isCorrect) score++;
+  renderQuestion(feedbackBlock(isCorrect ? "good" : "bad", isCorrect ? "Correct" : "Incorrect", isCorrect ? q.explain : `${q.hint} Correct answer: ${q.renderChoices[q.renderCorrect]}`));
+  setTimeout(nextQuestion, 5000);
 }
 
 function submitMulti(){
@@ -1128,7 +1144,6 @@ function submitMulti(){
   const selected = [...selectedMulti].sort((a,b)=>a-b);
   const isCorrect = arraysEqual(selected, q.renderCorrect);
   recordResult(q, isCorrect, selected.map(i => q.renderChoices[i]).join(" | "));
-
   if(isCorrect) score++;
   renderQuestion(feedbackBlock(isCorrect ? "good" : "bad", isCorrect ? "Correct" : "Incorrect", isCorrect ? q.explain : `${q.hint} Review the full set of correct ideas.`));
   setTimeout(nextQuestion, 5000);
@@ -1186,11 +1201,10 @@ function submitDragDrop(){
    FINISH / POST
 ========================= */
 async function postResults(payload){
-  if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE")) {
-    return { ok:false, skipped:true };
-  }
+  if(!APPS_SCRIPT_URL) return { ok:false, error:"Missing Apps Script URL" };
+
   try{
-    const res = await fetch(APPS_SCRIPT_URL, {
+    await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
@@ -1202,11 +1216,12 @@ async function postResults(payload){
   }
 }
 
-async function finishTest(){
+async function finishTest(submittedEarly){
   clearInterval(timer);
   finishedAt = new Date();
 
-  const percent = Math.round((score / questions.length) * 100);
+  const totalEvaluated = answeredCount;
+  const percent = totalEvaluated === 0 ? 0 : Math.round((score / totalEvaluated) * 100);
   const missed = detailedResults.filter(r => !r.correct);
   const missedCount = missed.length;
   const missedStems = missed.map(r => r.stem);
@@ -1226,7 +1241,7 @@ async function finishTest(){
     runtimeSeconds: elapsed,
     runtimeFormatted: formatTime(elapsed),
     score,
-    totalQuestions: questions.length,
+    totalQuestions: totalEvaluated,
     percent,
     passFail,
     missedCount,
@@ -1242,7 +1257,9 @@ async function finishTest(){
   APP.innerHTML = `
     <div class="ticket">
       <h2>Submission Ticket</h2>
-      <p class="sub">Turn this in to show completion. Spreadsheet-ready data has been prepared and posted if your Apps Script URL is set.</p>
+      <p class="sub">Turn this in to show completion. ${
+        submittedEarly ? "This was submitted early for testing or partial completion." : "This was submitted at the end of the test."
+      }</p>
 
       <div class="ticket-grid">
         <div class="ticket-item">
@@ -1270,8 +1287,12 @@ async function finishTest(){
           <div class="value">${attemptNumber}</div>
         </div>
         <div class="ticket-item">
+          <div class="label">Answered</div>
+          <div class="value">${answeredCount}</div>
+        </div>
+        <div class="ticket-item">
           <div class="label">Score</div>
-          <div class="value">${score} / ${questions.length}</div>
+          <div class="value">${score} / ${answeredCount}</div>
         </div>
         <div class="ticket-item">
           <div class="label">Percent</div>
@@ -1298,13 +1319,12 @@ async function finishTest(){
 
       <div class="question-card" style="margin-top:18px;">
         <div class="q-meta">Apps Script Status</div>
-        <p class="mono">
-          ${
-            postStatus.skipped
-              ? "POST skipped — paste your Apps Script URL into APPS_SCRIPT_URL at the top of the file."
-              : (postStatus.ok ? "POST attempted to Apps Script." : `POST error: ${escapeHtml(postStatus.error || "Unknown error")}`)
-          }
-        </p>
+        <p class="mono">${
+          postStatus.ok
+            ? "POST attempted to Apps Script."
+            : `POST error: ${escapeHtml(postStatus.error || "Unknown error")}`
+        }</p>
+        <p class="small-muted">Use the deployed /exec web app URL in this file.</p>
       </div>
 
       <div class="controls">
@@ -1329,9 +1349,9 @@ function hardRestart(){
   score = 0;
   locked = false;
   selectedMulti = new Set();
-  currentDropState = null;
   wrongQuestionIds = [];
   detailedResults = [];
+  answeredCount = 0;
   startScreen();
 }
 
