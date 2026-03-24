@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Government Trouble Areas Test</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .dropzone-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .bank,.bucket{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:16px;padding:14px}
+    .bucket h4,.bank h4{margin:0 0 10px}
+    .chip-drag{
+      display:inline-block;padding:10px 12px;margin:6px 6px 0 0;border-radius:999px;
+      border:1px solid var(--line);background:#141c39;color:var(--text);font-weight:700;cursor:grab
+    }
+    .bucket-area{
+      min-height:90px;border:1px dashed #4b67c5;border-radius:12px;padding:10px;background:rgba(255,255,255,.02)
+    }
+    .dropdown-line{margin:12px 0;line-height:1.8}
+    .dropdown-line select{
+      background:#111831;color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:0 6px
+    }
+    .qa-part{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    .small-muted{color:var(--muted);font-size:.92rem}
+    .submit-row{margin-top:14px}
+    .mono{font-family:Consolas,Menlo,monospace}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <header class="hero">
+      <div class="kicker">Legend Mastery Series • American Government</div>
+      <h1>Government Trouble Areas Test</h1>
+      <p class="sub">
+        Cumulative OST-style assessment with mixed item types, passage questions, Part A / Part B items,
+        dropdowns, drag-and-drop classification, and multi-select.
+      </p>
+      <div class="pills">
+        <span class="pill">40 Questions</span>
+        <span class="pill">OST-Style Mixed Items</span>
+        <span class="pill">Submission Ticket</span>
+        <span class="pill">Apps Script Ready</span>
+        <span class="pill">Attempt Tracking</span>
+      </div>
+    </header>
+
+    <div id="app"></div>
+  </div>
+
+<script>
+/* =========================
+   CONFIG
+========================= */
+const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const TEST_KEY = "gov_trouble_areas_test_v2";
+const PASS_PERCENT = 80;
+
+/* =========================
+   QUESTION SET
+========================= */
+const QUESTIONS = [
+  {
+    id: 1,
+    type: "single",
+    standard: "CS 5-7",
+    skill: "Federalists / Anti-Federalists",
+    passage: "A writer argues that the proposed Constitution will create a government strong enough to provide national defense, regulate trade, and correct the weaknesses of the Articles of Confederation.",
+    stem: "Which group would most likely support this argument?",
+    choices: ["Anti-Federalists", "Federalists", "State nullifiers", "Supporters of direct democracy only"],
+    correct: 1,
+    hint: "Think about which group supported a stronger national government.",
+    explain: "Federalists supported ratification because they believed the national government under the Articles was too weak."
+  },
+  {
+    id: 2,
+    type: "single",
+    standard: "CS 5-7",
+    skill: "Federalists / Anti-Federalists Part B",
+    passage: "A writer argues that the proposed Constitution will create a government strong enough to provide national defense, regulate trade, and correct the weaknesses of the Articles of Confederation.",
+    stem: "Which evidence best supports the answer to Part A?",
+    choices: [
+      "The argument criticizes centralized power as a threat to liberty.",
+      "The argument supports stronger national powers to fix problems under the Articles.",
+      "The argument demands a Bill of Rights before ratification.",
+      "The argument insists that states should remain mostly independent."
+    ],
+    correct: 1,
+    hint: "Look for the choice that matches the pro-ratification, pro-national-government position.",
+    explain: "Support for stronger national power to solve Articles-era problems is a classic Federalist argument."
+  },
+  {
+    id: 3,
+    type: "single",
+    standard: "CS 5",
+    skill: "Basic Principles",
+    passage: "Government officials are limited to powers granted by law and must obey constitutional rules.",
+    stem: "This passage best reflects which constitutional principle?",
+    choices: ["Limited government", "Popular sovereignty", "Federalism", "Direct democracy"],
+    correct: 0,
+    hint: "The key phrase is that officials are restricted by law.",
+    explain: "Limited government means the government only has the powers granted to it and must act according to law."
+  },
+  {
+    id: 4,
+    type: "multi",
+    standard: "CS 5-7",
+    skill: "Informal Constitutional Change",
+    stem: "Select TWO examples of informal constitutional change.",
+    choices: [
+      "The Supreme Court expands rights through constitutional interpretation.",
+      "Political parties shape elections and lawmaking even though the Constitution does not create them.",
+      "Three-fourths of the states ratify a new amendment.",
+      "Congress proposes a constitutional amendment.",
+      "A state elects a governor."
+    ],
+    correct: [0,1],
+    hint: "Informal change happens through interpretation, practice, or legislation, not Article V.",
+    explain: "Court interpretation and political party practice are both examples of informal constitutional change."
+  },
+  {
+    id: 5,
+    type: "multi",
+    standard: "CS 12-16",
+    skill: "Checks and Balances",
+    stem: "Select TWO actions that are examples of checks and balances.",
+    choices: [
+      "The president vetoes a bill.",
+      "Congress overrides a veto.",
+      "A governor gives a speech.",
+      "A city council approves meeting minutes.",
+      "A school board hires a principal."
+    ],
+    correct: [0,1],
+    hint: "Look for one branch limiting another branch.",
+    explain: "A presidential veto and a congressional override are classic examples of checks and balances."
+  },
+  {
+    id: 6,
+    type: "dropdown",
+    standard: "CS 5-7",
+    skill: "Formal vs Informal Change",
+    passage: "Read each development and identify whether it is a formal or informal constitutional change.",
+    lines: [
+      {
+        parts: [
+          "The states ratify a new amendment changing presidential succession rules: ",
+          { blank: true, options: ["formal", "informal"], correct: "formal" }
+        ]
+      },
+      {
+        parts: [
+          "The Supreme Court changes how equal protection is applied in a major case: ",
+          { blank: true, options: ["formal", "informal"], correct: "informal" }
+        ]
+      },
+      {
+        parts: [
+          "Political parties become central to the way government operates: ",
+          { blank: true, options: ["formal", "informal"], correct: "informal" }
+        ]
+      }
+    ],
+    hint: "Formal = amendment process. Informal = interpretation, legislation, or custom.",
+    explain: "Amendments are formal changes, while court interpretation and political practice are informal changes."
+  },
+  {
+    id: 7,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Checks and Balances",
+    passage: "The Senate rejects a president's nominee for the Supreme Court.",
+    stem: "This best demonstrates that the legislative branch can",
+    choices: [
+      "enforce laws directly",
+      "check executive appointment power",
+      "rewrite the Constitution on its own",
+      "remove justices without impeachment"
+    ],
+    correct: 1,
+    hint: "Think confirmation power.",
+    explain: "The Senate's confirmation power is a legislative check on executive appointments."
+  },
+  {
+    id: 8,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Checks and Balances Part B",
+    passage: "The Senate rejects a president's nominee for the Supreme Court.",
+    stem: "Which principle is most directly illustrated by this action?",
+    choices: ["Popular sovereignty", "Checks and balances", "Federalism", "Rule by executive order"],
+    correct: 1,
+    hint: "One branch is limiting another branch.",
+    explain: "The Senate rejecting a nominee is an example of checks and balances."
+  },
+  {
+    id: 9,
+    type: "dragdrop",
+    standard: "CS 5-7",
+    skill: "Formal vs Informal Change Sorting",
+    stem: "Drag each item into the correct category.",
+    bank: [
+      "26th Amendment lowers the voting age",
+      "Judicial review from Marbury v. Madison",
+      "Political party conventions choose candidates",
+      "19th Amendment extends voting rights to women"
+    ],
+    buckets: {
+      "Formal Change": [
+        "26th Amendment lowers the voting age",
+        "19th Amendment extends voting rights to women"
+      ],
+      "Informal Change": [
+        "Judicial review from Marbury v. Madison",
+        "Political party conventions choose candidates"
+      ]
+    },
+    hint: "Amendments are formal. Court rulings and customs are informal.",
+    explain: "Formal change comes through Article V amendments. Informal change comes through interpretation and practice."
+  },
+  {
+    id: 10,
+    type: "single",
+    standard: "CS 17-19",
+    skill: "Civic Participation",
+    passage: "A citizen researches a zoning proposal, attends a public meeting, and presents evidence about how the proposal would affect the neighborhood.",
+    stem: "This is best described as",
+    choices: ["judicial review", "civic participation", "monetary policy", "federal supremacy"],
+    correct: 1,
+    hint: "The citizen is taking informed action on a public issue.",
+    explain: "Researching an issue and speaking at a public meeting is civic participation."
+  },
+  {
+    id: 11,
+    type: "single",
+    standard: "CS 20",
+    skill: "Fiscal Policy",
+    passage: "Congress increases government spending on infrastructure projects during a recession.",
+    stem: "This is an example of",
+    choices: ["contractionary monetary policy", "fiscal policy", "judicial review", "limited government only"],
+    correct: 1,
+    hint: "Think government spending and taxation.",
+    explain: "Fiscal policy includes government decisions about spending and taxation."
+  },
+  {
+    id: 12,
+    type: "single",
+    standard: "CS 21",
+    skill: "Monetary Policy",
+    passage: "The Federal Reserve lowers interest rates to encourage borrowing and economic activity.",
+    stem: "This action is best classified as",
+    choices: ["monetary policy", "fiscal policy", "judicial restraint", "popular sovereignty"],
+    correct: 0,
+    hint: "The Federal Reserve manages money supply and rates.",
+    explain: "Monetary policy includes interest-rate decisions made by the Federal Reserve."
+  },
+  {
+    id: 13,
+    type: "multi",
+    standard: "CS 20-21",
+    skill: "Fiscal vs Monetary Tools",
+    stem: "Select TWO examples of monetary policy tools.",
+    choices: [
+      "Buying government securities",
+      "Raising reserve requirements",
+      "Congress cutting income taxes",
+      "Congress increasing highway spending",
+      "State officials passing a budget"
+    ],
+    correct: [0,1],
+    hint: "Monetary tools are tied to the Federal Reserve, not Congress's taxing/spending decisions.",
+    explain: "Open market operations and reserve requirements are monetary policy tools."
+  },
+  {
+    id: 14,
+    type: "dropdown",
+    standard: "CS 20-21",
+    skill: "Policy Classification",
+    passage: "Choose the correct policy type for each action.",
+    lines: [
+      {
+        parts: [
+          "Congress cuts taxes to stimulate demand: ",
+          { blank: true, options: ["fiscal policy", "monetary policy"], correct: "fiscal policy" }
+        ]
+      },
+      {
+        parts: [
+          "The Federal Reserve sells government securities: ",
+          { blank: true, options: ["fiscal policy", "monetary policy"], correct: "monetary policy" }
+        ]
+      },
+      {
+        parts: [
+          "Congress increases spending on public works: ",
+          { blank: true, options: ["fiscal policy", "monetary policy"], correct: "fiscal policy" }
+        ]
+      }
+    ],
+    hint: "Congress = fiscal. Federal Reserve = monetary.",
+    explain: "Fiscal policy is taxing/spending. Monetary policy is money supply and interest rates."
+  },
+  {
+    id: 15,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Branch Roles",
+    passage: "A court hears a case involving whether a law violates equal protection under the Constitution.",
+    stem: "Which branch responsibility is being illustrated?",
+    choices: ["Making laws", "Interpreting laws and Constitution", "Appropriating funds", "Commanding the military"],
+    correct: 1,
+    hint: "Courts decide legal meaning and constitutionality.",
+    explain: "The judicial branch interprets laws and the Constitution."
+  },
+  {
+    id: 16,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Branch Roles",
+    passage: "A legislature studies, debates, amends, and votes on a proposed bill.",
+    stem: "Which responsibility is most directly shown?",
+    choices: ["Enforcing laws", "Interpreting laws", "Making laws", "Negotiating treaties"],
+    correct: 2,
+    hint: "This is the lawmaking process.",
+    explain: "Writing, debating, and voting on bills is the role of the legislative branch."
+  },
+  {
+    id: 17,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Branch Roles",
+    passage: "An executive agency carries out and enforces a law passed by the legislature.",
+    stem: "This most directly reflects the role of the",
+    choices: ["executive branch", "judicial branch", "legislative branch", "electoral college"],
+    correct: 0,
+    hint: "The executive branch carries laws into effect.",
+    explain: "Enforcing laws is the central role of the executive branch."
+  },
+  {
+    id: 18,
+    type: "single",
+    standard: "CS 5",
+    skill: "Popular Sovereignty",
+    passage: "Voters choose public officials, approve ballot issues, and remove leaders through elections.",
+    stem: "This best illustrates",
+    choices: ["executive privilege", "popular sovereignty", "judicial review", "strict scrutiny"],
+    correct: 1,
+    hint: "Government authority comes from the people.",
+    explain: "Popular sovereignty means government gets its authority from the people."
+  },
+  {
+    id: 19,
+    type: "dragdrop",
+    standard: "CS 12-16",
+    skill: "Which Branch Is Checking?",
+    stem: "Drag each action to the branch doing the checking.",
+    bank: [
+      "Overrides a veto",
+      "Rejects a treaty",
+      "Declares a law unconstitutional",
+      "Vetoes a bill"
+    ],
+    buckets: {
+      "Legislative Branch": [
+        "Overrides a veto",
+        "Rejects a treaty"
+      ],
+      "Judicial Branch": [
+        "Declares a law unconstitutional"
+      ],
+      "Executive Branch": [
+        "Vetoes a bill"
+      ]
+    },
+    hint: "Congress overrides and approves/rejects treaties. Courts review laws. Presidents veto.",
+    explain: "These actions show how all three branches can participate in checks and balances."
+  },
+  {
+    id: 20,
+    type: "single",
+    standard: "CS 16-17",
+    skill: "Ohio Constitution",
+    passage: "Like the U.S. Constitution, the Ohio Constitution organizes government, allocates powers, and places limits on government action.",
+    stem: "This passage supports the conclusion that constitutions mainly",
+    choices: [
+      "set the framework of government",
+      "eliminate the need for ordinary laws",
+      "replace all elections",
+      "make all public policy decisions automatically"
+    ],
+    correct: 0,
+    hint: "Think about the broad purpose of a constitution.",
+    explain: "Constitutions establish the basic framework, powers, and limits of government."
+  },
+  {
+    id: 21,
+    type: "single",
+    standard: "CS 5-7",
+    skill: "Anti-Federalist Argument",
+    passage: "A speaker warns that the proposed Constitution lacks a bill of rights and gives too much power to a distant central government.",
+    stem: "This speaker would most likely be identified as a",
+    choices: ["Federalist", "Anti-Federalist", "supporter of loose construction only", "judicial nationalist"],
+    correct: 1,
+    hint: "Think fear of centralized power and demand for rights protections.",
+    explain: "Anti-Federalists feared centralized power and argued that a Bill of Rights was necessary."
+  },
+  {
+    id: 22,
+    type: "single",
+    standard: "CS 5-7",
+    skill: "Part A / Part B Evidence",
+    passage: "A speaker warns that the proposed Constitution lacks a bill of rights and gives too much power to a distant central government.",
+    stem: "Which evidence best supports the answer to Part A?",
+    choices: [
+      "The speaker praises a stronger national government.",
+      "The speaker says the Constitution's structure alone protects liberty.",
+      "The speaker argues that rights are unsafe without specific written protections.",
+      "The speaker supports national regulation of interstate commerce."
+    ],
+    correct: 2,
+    hint: "Look for evidence tied to fear of centralized power and demand for a Bill of Rights.",
+    explain: "Demanding written rights protections is a classic Anti-Federalist argument."
+  },
+  {
+    id: 23,
+    type: "multi",
+    standard: "CS 12-16",
+    skill: "Legislative Powers",
+    stem: "Select TWO actions that belong most directly to the legislative branch.",
+    choices: [
+      "Passing a law",
+      "Appropriating money",
+      "Interpreting a statute in court",
+      "Signing a bill into law",
+      "Commanding armed forces"
+    ],
+    correct: [0,1],
+    hint: "Think lawmaking and control of spending.",
+    explain: "Passing laws and appropriating funds are central legislative powers."
+  },
+  {
+    id: 24,
+    type: "single",
+    standard: "CS 20-21",
+    skill: "Contractionary Monetary Policy",
+    passage: "Inflation is rising rapidly, so the Federal Reserve raises interest rates and sells securities.",
+    stem: "The main goal of these actions is to",
+    choices: [
+      "increase the money supply",
+      "slow borrowing and reduce inflationary pressure",
+      "lower taxes for consumers",
+      "expand government spending"
+    ],
+    correct: 1,
+    hint: "Higher rates and selling securities reduce economic activity.",
+    explain: "These are contractionary monetary tools used to reduce inflation."
+  },
+  {
+    id: 25,
+    type: "single",
+    standard: "CS 20",
+    skill: "Expansionary Fiscal Policy",
+    passage: "Unemployment rises, so Congress cuts taxes and increases spending on infrastructure projects.",
+    stem: "These actions are intended to",
+    choices: [
+      "reduce demand in the economy",
+      "stimulate economic activity and job growth",
+      "decrease the money supply through the Federal Reserve",
+      "limit judicial review"
+    ],
+    correct: 1,
+    hint: "Tax cuts and higher spending are expansionary fiscal tools.",
+    explain: "Expansionary fiscal policy is intended to stimulate demand and employment."
+  },
+  {
+    id: 26,
+    type: "dropdown",
+    standard: "CS 12-16",
+    skill: "Branch Match",
+    passage: "Choose the branch most directly responsible for each action.",
+    lines: [
+      {
+        parts: [
+          "Approves or rejects presidential nominees: ",
+          { blank: true, options: ["legislative", "executive", "judicial"], correct: "legislative" }
+        ]
+      },
+      {
+        parts: [
+          "Interprets whether a law is constitutional: ",
+          { blank: true, options: ["legislative", "executive", "judicial"], correct: "judicial" }
+        ]
+      },
+      {
+        parts: [
+          "Carries out the laws: ",
+          { blank: true, options: ["legislative", "executive", "judicial"], correct: "executive" }
+        ]
+      }
+    ],
+    hint: "Think Senate/Congress = legislative, courts = judicial, president/agencies = executive.",
+    explain: "These are core responsibilities of the three branches."
+  },
+  {
+    id: 27,
+    type: "single",
+    standard: "CS 17-19",
+    skill: "Public Policy",
+    passage: "A class identifies a community issue, researches possible solutions, and evaluates the likely costs and benefits of each option before making a recommendation.",
+    stem: "This best demonstrates",
+    choices: [
+      "reasoned civic decision-making",
+      "judicial review",
+      "executive privilege",
+      "electoral college voting"
+    ],
+    correct: 0,
+    hint: "The key is researching and weighing costs/benefits before acting.",
+    explain: "Reasoned civic decision-making involves evaluating evidence and consequences before choosing a policy position."
+  },
+  {
+    id: 28,
+    type: "single",
+    standard: "CS 17-19",
+    skill: "Input into Government",
+    passage: "Citizens contact officials, sign petitions, attend public meetings, and speak during hearings to influence government action.",
+    stem: "These are best understood as",
+    choices: [
+      "methods of civic input into government",
+      "judicial powers",
+      "formal constitutional changes",
+      "monetary policy tools"
+    ],
+    correct: 0,
+    hint: "These are ways people influence public decisions.",
+    explain: "Petitions, meetings, hearings, and contacting officials are all forms of civic input into government."
+  },
+  {
+    id: 29,
+    type: "dragdrop",
+    standard: "CS 20-21",
+    skill: "Fiscal vs Monetary Sorting",
+    stem: "Drag each action into the correct policy category.",
+    bank: [
+      "Congress cuts taxes",
+      "Federal Reserve lowers reserve requirements",
+      "Congress increases spending",
+      "Federal Reserve buys securities"
+    ],
+    buckets: {
+      "Fiscal Policy": [
+        "Congress cuts taxes",
+        "Congress increases spending"
+      ],
+      "Monetary Policy": [
+        "Federal Reserve lowers reserve requirements",
+        "Federal Reserve buys securities"
+      ]
+    },
+    hint: "Congress = fiscal. Federal Reserve = monetary.",
+    explain: "Fiscal policy comes from government taxing/spending decisions, while monetary policy comes from Federal Reserve tools."
+  },
+  {
+    id: 30,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Judicial Review",
+    passage: "The Supreme Court rules that a law conflicts with the Constitution and therefore cannot remain in effect.",
+    stem: "This power is called",
+    choices: ["federalism", "judicial review", "popular sovereignty", "executive privilege"],
+    correct: 1,
+    hint: "This is the court's power to review constitutionality.",
+    explain: "Judicial review is the power of courts to determine whether laws or actions violate the Constitution."
+  },
+  {
+    id: 31,
+    type: "single",
+    standard: "CS 5",
+    skill: "Federalism",
+    passage: "A state government manages education standards while the national government enforces constitutional protections that apply nationwide.",
+    stem: "This best reflects the principle of",
+    choices: ["federalism", "judicial supremacy only", "direct democracy", "strict construction only"],
+    correct: 0,
+    hint: "The clue is power shared across levels of government.",
+    explain: "Federalism divides power between national and state governments."
+  },
+  {
+    id: 32,
+    type: "single",
+    standard: "CS 5",
+    skill: "Separation of Powers",
+    passage: "The Constitution assigns lawmaking, law enforcement, and judicial interpretation to different branches.",
+    stem: "This arrangement is called",
+    choices: ["separation of powers", "judicial review", "federalism", "electoral accountability"],
+    correct: 0,
+    hint: "The focus is on dividing functions among branches.",
+    explain: "Separation of powers distributes different powers to different branches."
+  },
+  {
+    id: 33,
+    type: "multi",
+    standard: "CS 5",
+    skill: "Limited Government",
+    stem: "Select TWO statements that best reflect limited government.",
+    choices: [
+      "Officials must act within constitutional limits.",
+      "Government only has powers granted by law.",
+      "Leaders may ignore court decisions whenever they want.",
+      "A president may suspend elections without authority.",
+      "Congress can act without any constitutional restrictions."
+    ],
+    correct: [0,1],
+    hint: "Limited government means restricted power, not unlimited discretion.",
+    explain: "Limited government means public officials are bound by constitutional and legal limits."
+  },
+  {
+    id: 34,
+    type: "single",
+    standard: "CS 17-19",
+    skill: "Policy Influence",
+    passage: "An interest group runs advertisements, provides research to lawmakers, and testifies during a committee hearing.",
+    stem: "The group's goal is most likely to",
+    choices: [
+      "influence public policy",
+      "exercise judicial review",
+      "amend the Constitution directly",
+      "set interest rates"
+    ],
+    correct: 0,
+    hint: "Think about what lobbying and testimony are trying to do.",
+    explain: "Interest groups seek to influence public policy through advocacy and information."
+  },
+  {
+    id: 35,
+    type: "single",
+    standard: "CS 16-17",
+    skill: "Ohio Civic Roles",
+    passage: "Citizens serve on juries, vote in local elections, and participate in community decision-making.",
+    stem: "These actions best show that Ohio citizens have",
+    choices: [
+      "no responsibility beyond paying taxes",
+      "roles and responsibilities in democratic government",
+      "only federal responsibilities, not local ones",
+      "powers identical to judges"
+    ],
+    correct: 1,
+    hint: "The question is about citizen duties and participation.",
+    explain: "Citizens in Ohio have roles and responsibilities that include voting, jury service, and community participation."
+  },
+  {
+    id: 36,
+    type: "dropdown",
+    standard: "CS 5 / 12-16",
+    skill: "Principle Match",
+    passage: "Choose the best principle for each example.",
+    lines: [
+      {
+        parts: [
+          "Government gets its authority from the people: ",
+          { blank: true, options: ["popular sovereignty", "checks and balances", "federalism"], correct: "popular sovereignty" }
+        ]
+      },
+      {
+        parts: [
+          "The president vetoes a bill and Congress can override: ",
+          { blank: true, options: ["popular sovereignty", "checks and balances", "federalism"], correct: "checks and balances" }
+        ]
+      },
+      {
+        parts: [
+          "Power is divided between the national government and the states: ",
+          { blank: true, options: ["popular sovereignty", "checks and balances", "federalism"], correct: "federalism" }
+        ]
+      }
+    ],
+    hint: "Think people / branch limits / state-national division.",
+    explain: "These are core constitutional principles: popular sovereignty, checks and balances, and federalism."
+  },
+  {
+    id: 37,
+    type: "single",
+    standard: "CS 20-21",
+    skill: "Policy Application",
+    passage: "A student says, 'The government should lower taxes to help the economy.' Another student says, 'The Federal Reserve should lower interest rates.'",
+    stem: "Which statement correctly compares the two proposals?",
+    choices: [
+      "Both are fiscal policy ideas.",
+      "Both are monetary policy ideas.",
+      "The first is fiscal policy and the second is monetary policy.",
+      "The first is judicial review and the second is fiscal policy."
+    ],
+    correct: 2,
+    hint: "Taxes = fiscal. Interest rates = monetary.",
+    explain: "Tax decisions are fiscal policy, while interest-rate decisions are monetary policy."
+  },
+  {
+    id: 38,
+    type: "single",
+    standard: "CS 12-16",
+    skill: "Branch Interaction",
+    passage: "Congress passes a law, the president vetoes it, Congress overrides the veto, and later the Supreme Court reviews the law's constitutionality.",
+    stem: "This sequence best illustrates",
+    choices: [
+      "checks and balances among all three branches",
+      "federalism only",
+      "direct democracy only",
+      "state nullification"
+    ],
+    correct: 0,
+    hint: "More than one branch is interacting here.",
+    explain: "The sequence shows all three branches participating in checking and reviewing government action."
+  },
+  {
+    id: 39,
+    type: "single",
+    standard: "CS 5-7",
+    skill: "Constitutional Change",
+    passage: "The Supreme Court changes how a constitutional right applies without any amendment being ratified.",
+    stem: "This is best classified as",
+    choices: [
+      "formal constitutional change",
+      "informal constitutional change through interpretation",
+      "an Article V convention",
+      "state legislative supremacy"
+    ],
+    correct: 1,
+    hint: "No constitutional text changed, but meaning changed.",
+    explain: "Court interpretation can create informal constitutional change without formally amending the Constitution."
+  },
+  {
+    id: 40,
+    type: "multi",
+    standard: "CS 17-21",
+    skill: "Capstone Application",
+    stem: "Select TWO actions that best show informed participation in government.",
+    choices: [
+      "Researching candidates before voting",
+      "Comparing policy costs and benefits before taking a position",
+      "Ignoring evidence and repeating rumors online",
+      "Assuming public policy has no trade-offs",
+      "Refusing to learn how government works"
+    ],
+    correct: [0,1],
+    hint: "Informed participation depends on evidence and evaluation.",
+    explain: "Researching issues and weighing costs and benefits are key parts of informed civic participation."
+  }
+];
+
+/* =========================
+   HELPERS
+========================= */
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function formatTime(seconds){
+  const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
+}
+function formatStamp(d){
+  return d.toLocaleString();
+}
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function arraysEqual(a,b){
+  return JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+}
+function slugify(s){
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");
+}
+function attemptKey(name){
+  return `${TEST_KEY}__attempts__${slugify(name)}`;
+}
+function getAttemptNumber(name){
+  const key = attemptKey(name);
+  const prev = parseInt(localStorage.getItem(key) || "0", 10);
+  const next = prev + 1;
+  localStorage.setItem(key, String(next));
+  return next;
+}
+
+/* =========================
+   APP STATE
+========================= */
+const APP = document.getElementById("app");
+
+let studentName = "";
+let startedAt = null;
+let finishedAt = null;
+let elapsed = 0;
+let timer = null;
+let attemptNumber = 1;
+
+let questions = [];
+let current = 0;
+let score = 0;
+let locked = false;
+let selectedMulti = new Set();
+let currentDropState = null;
+let wrongQuestionIds = [];
+let detailedResults = [];
+
+/* =========================
+   BUILD BANK
+========================= */
+function buildQuestionBank(){
+  return QUESTIONS.map((q, idx) => {
+    if(q.type === "single" || q.type === "multi"){
+      const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+      const remappedChoices = order.map(x => x.choice);
+
+      if(q.type === "single"){
+        const newCorrect = order.findIndex(x => x.originalIndex === q.correct);
+        return { ...q, renderChoices: remappedChoices, renderCorrect: newCorrect, ordinal: idx + 1 };
+      }
+
+      const newCorrect = q.correct.map(ci => order.findIndex(x => x.originalIndex === ci)).sort((a,b)=>a-b);
+      return { ...q, renderChoices: remappedChoices, renderCorrect: newCorrect, ordinal: idx + 1 };
+    }
+
+    return { ...q, ordinal: idx + 1 };
+  });
+}
+
+/* =========================
+   START SCREEN
+========================= */
+function startScreen(){
+  APP.innerHTML = `
+    <div class="start-card">
+      <h2>Enter your name to begin</h2>
+      <p>
+        This test uses mixed OST-style item formats. Your submission ticket will include your score, percent,
+        runtime, attempt number, missed stems, and spreadsheet-ready analytics data.
+      </p>
+      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
+      <button class="btn" id="startBtn">Start Test</button>
+      <hr class="sep">
+      <p class="note">This test tracks attempts, timestamps, percent, missed stems, and weak-area tags.</p>
+    </div>
+  `;
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if(!name){
+      alert("Please enter your name before starting.");
+      return;
+    }
+
+    studentName = name;
+    attemptNumber = getAttemptNumber(studentName);
+    startedAt = new Date();
+    elapsed = 0;
+    finishedAt = null;
+    current = 0;
+    score = 0;
+    locked = false;
+    selectedMulti = new Set();
+    currentDropState = null;
+    wrongQuestionIds = [];
+    detailedResults = [];
+    questions = buildQuestionBank();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed++;
+      const rt = document.getElementById("runtime");
+      if(rt) rt.textContent = formatTime(elapsed);
+    }, 1000);
+
+    renderQuestion();
+  });
+}
+
+/* =========================
+   RENDER
+========================= */
+function renderQuestion(feedbackHtml = ""){
+  const q = questions[current];
+  const progressPct = Math.round((current / questions.length) * 100);
+  const percent = Math.round((score / Math.max(current,1)) * 100);
+
+  APP.innerHTML = `
+    <div class="game-wrap">
+      <div class="hud">
+        <div class="stat">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Correct</div>
+          <div class="stat-value">${score}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Percent</div>
+          <div class="stat-value">${percent}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Attempt</div>
+          <div class="stat-value">${attemptNumber}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Runtime</div>
+          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Started</div>
+          <div class="stat-value">${formatStamp(startedAt)}</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-meta">Question ${current + 1} of ${questions.length} • ${escapeHtml(q.standard)} • ${escapeHtml(q.skill)}</div>
+        ${q.passage ? `<div class="passage">${escapeHtml(q.passage)}</div>` : ``}
+        <div class="stem">${escapeHtml(q.stem)}</div>
+        <div id="responseArea"></div>
+        ${feedbackHtml}
+        <div class="controls">
+          <button class="btn secondary" id="restartBtn">Restart Test</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+  renderResponseArea(q);
+}
+
+function renderResponseArea(q){
+  const area = document.getElementById("responseArea");
+
+  if(q.type === "single"){
+    area.innerHTML = `<div class="choices" id="choices"></div>`;
+    const choicesEl = document.getElementById("choices");
+    q.renderChoices.forEach((choice, i) => {
+      const btn = document.createElement("button");
+      btn.className = "choice";
+      btn.innerHTML = `<strong>${String.fromCharCode(65+i)}.</strong> ${escapeHtml(choice)}`;
+      btn.addEventListener("click", () => submitSingle(i));
+      choicesEl.appendChild(btn);
+    });
+    return;
+  }
+
+  if(q.type === "multi"){
+    area.innerHTML = `
+      <div class="choices" id="choices"></div>
+      <div class="submit-row">
+        <button class="btn" id="submitMultiBtn">Submit Selection</button>
+      </div>
+    `;
+    const choicesEl = document.getElementById("choices");
+    q.renderChoices.forEach((choice, i) => {
+      const btn = document.createElement("button");
+      btn.className = "choice" + (selectedMulti.has(i) ? " selected" : "");
+      btn.innerHTML = `<strong>${String.fromCharCode(65+i)}.</strong> ${escapeHtml(choice)}`;
+      btn.addEventListener("click", () => {
+        if(locked) return;
+        if(selectedMulti.has(i)) selectedMulti.delete(i); else selectedMulti.add(i);
+        renderQuestion();
+      });
+      choicesEl.appendChild(btn);
+    });
+    document.getElementById("submitMultiBtn").addEventListener("click", submitMulti);
+    return;
+  }
+
+  if(q.type === "dropdown"){
+    area.innerHTML = `
+      <div id="dropdownWrap"></div>
+      <div class="submit-row"><button class="btn" id="submitDropdownBtn">Submit Response</button></div>
+    `;
+    const wrap = document.getElementById("dropdownWrap");
+    q.lines.forEach((line, lineIdx) => {
+      const div = document.createElement("div");
+      div.className = "dropdown-line";
+      line.parts.forEach((part, partIdx) => {
+        if(typeof part === "string"){
+          const span = document.createElement("span");
+          span.textContent = part;
+          div.appendChild(span);
+        } else if(part.blank){
+          const sel = document.createElement("select");
+          sel.dataset.line = lineIdx;
+          sel.dataset.part = partIdx;
+          sel.innerHTML = `<option value="">Choose...</option>` + part.options.map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join("");
+          div.appendChild(sel);
+        }
+      });
+      wrap.appendChild(div);
+    });
+    document.getElementById("submitDropdownBtn").addEventListener("click", submitDropdown);
+    return;
+  }
+
+  if(q.type === "dragdrop"){
+    area.innerHTML = `
+      <div class="dropzone-wrap">
+        <div class="bank">
+          <h4>Bank</h4>
+          <div id="bankArea" class="bucket-area"></div>
+        </div>
+        ${Object.keys(q.buckets).map(bucketName => `
+          <div class="bucket">
+            <h4>${escapeHtml(bucketName)}</h4>
+            <div class="bucket-area" data-bucket="${escapeHtml(bucketName)}"></div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="small-muted" style="margin-top:10px;">Drag items into the correct category. You can drag them back out if needed.</div>
+      <div class="submit-row"><button class="btn" id="submitDragBtn">Submit Sort</button></div>
+    `;
+
+    const bankArea = document.getElementById("bankArea");
+    q.bank.forEach((item, idx) => {
+      const chip = document.createElement("div");
+      chip.className = "chip-drag";
+      chip.draggable = true;
+      chip.dataset.item = item;
+      chip.id = `drag_${current}_${idx}`;
+      chip.textContent = item;
+      bankArea.appendChild(chip);
+    });
+
+    wireDragDrop();
+    document.getElementById("submitDragBtn").addEventListener("click", submitDragDrop);
+    return;
+  }
+}
+
+function wireDragDrop(){
+  document.querySelectorAll(".chip-drag").forEach(chip => {
+    chip.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", chip.id);
+    });
+  });
+
+  document.querySelectorAll(".bucket-area").forEach(area => {
+    area.addEventListener("dragover", e => e.preventDefault());
+    area.addEventListener("drop", e => {
+      e.preventDefault();
+      const id = e.dataTransfer.getData("text/plain");
+      const el = document.getElementById(id);
+      if(el) area.appendChild(el);
+    });
+  });
+}
+
+/* =========================
+   SUBMIT / GRADE
+========================= */
+function recordResult(q, isCorrect, studentAnswer){
+  detailedResults.push({
+    id: q.id,
+    standard: q.standard,
+    skill: q.skill,
+    type: q.type,
+    stem: q.stem,
+    correct: isCorrect,
+    studentAnswer
+  });
+  if(!isCorrect) wrongQuestionIds.push(q.id);
+}
+
+function nextQuestion(){
+  locked = false;
+  selectedMulti = new Set();
+  currentDropState = null;
+  current++;
+  if(current >= questions.length){
+    finishTest();
+  } else {
+    renderQuestion();
+  }
+}
+
+function feedbackBlock(kind, label, text){
+  return `
+    <div class="feedback ${kind}">
+      <span class="label">${label}</span>
+      ${escapeHtml(text)}
+    </div>
+  `;
+}
+
+function submitSingle(selected){
+  if(locked) return;
+  locked = true;
+  const q = questions[current];
+  const isCorrect = selected === q.renderCorrect;
+  recordResult(q, isCorrect, q.renderChoices[selected]);
+
+  if(isCorrect){
+    score++;
+    renderQuestion(feedbackBlock("good", "Correct", q.explain));
+    setTimeout(nextQuestion, 5000);
+  } else {
+    renderQuestion(feedbackBlock("bad", "Incorrect", `${q.hint} Correct answer: ${q.renderChoices[q.renderCorrect]}`));
+    setTimeout(nextQuestion, 5000);
+  }
+}
+
+function submitMulti(){
+  if(locked) return;
+  const q = questions[current];
+  if(selectedMulti.size === 0){
+    alert("Select your answer choices first.");
+    return;
+  }
+  locked = true;
+  const selected = [...selectedMulti].sort((a,b)=>a-b);
+  const isCorrect = arraysEqual(selected, q.renderCorrect);
+  recordResult(q, isCorrect, selected.map(i => q.renderChoices[i]).join(" | "));
+
+  if(isCorrect) score++;
+  renderQuestion(feedbackBlock(isCorrect ? "good" : "bad", isCorrect ? "Correct" : "Incorrect", isCorrect ? q.explain : `${q.hint} Review the full set of correct ideas.`));
+  setTimeout(nextQuestion, 5000);
+}
+
+function submitDropdown(){
+  if(locked) return;
+  const q = questions[current];
+  const selects = [...document.querySelectorAll("#dropdownWrap select")];
+  if(selects.some(s => !s.value)){
+    alert("Complete all dropdowns first.");
+    return;
+  }
+  locked = true;
+
+  let isCorrect = true;
+  const studentAnswer = [];
+  q.lines.forEach((line, lineIdx) => {
+    line.parts.forEach((part, partIdx) => {
+      if(part.blank){
+        const sel = selects.find(s => Number(s.dataset.line) === lineIdx && Number(s.dataset.part) === partIdx);
+        studentAnswer.push(sel.value);
+        if(sel.value !== part.correct) isCorrect = false;
+      }
+    });
+  });
+
+  recordResult(q, isCorrect, studentAnswer.join(" | "));
+  if(isCorrect) score++;
+  renderQuestion(feedbackBlock(isCorrect ? "good" : "bad", isCorrect ? "Correct" : "Incorrect", isCorrect ? q.explain : q.hint));
+  setTimeout(nextQuestion, 5000);
+}
+
+function submitDragDrop(){
+  if(locked) return;
+  const q = questions[current];
+  locked = true;
+
+  let isCorrect = true;
+  const studentMap = {};
+  Object.keys(q.buckets).forEach(bucketName => {
+    const area = document.querySelector(`.bucket-area[data-bucket="${CSS.escape(bucketName)}"]`);
+    const items = [...area.querySelectorAll(".chip-drag")].map(el => el.dataset.item);
+    studentMap[bucketName] = items;
+    if(!arraysEqual(items, q.buckets[bucketName])) isCorrect = false;
+  });
+
+  recordResult(q, isCorrect, JSON.stringify(studentMap));
+  if(isCorrect) score++;
+  renderQuestion(feedbackBlock(isCorrect ? "good" : "bad", isCorrect ? "Correct" : "Incorrect", isCorrect ? q.explain : q.hint));
+  setTimeout(nextQuestion, 5000);
+}
+
+/* =========================
+   FINISH / POST
+========================= */
+async function postResults(payload){
+  if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE")) {
+    return { ok:false, skipped:true };
+  }
+  try{
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    return { ok:true };
+  }catch(err){
+    return { ok:false, error:String(err) };
+  }
+}
+
+async function finishTest(){
+  clearInterval(timer);
+  finishedAt = new Date();
+
+  const percent = Math.round((score / questions.length) * 100);
+  const missed = detailedResults.filter(r => !r.correct);
+  const missedCount = missed.length;
+  const missedStems = missed.map(r => r.stem);
+  const standardsMissed = [...new Set(missed.map(r => r.standard))];
+  const questionTypesMissed = [...new Set(missed.map(r => r.type))];
+  const skillsMissed = [...new Set(missed.map(r => r.skill))];
+  const passFail = percent >= PASS_PERCENT ? "PASS" : "REVIEW";
+
+  const payload = {
+    classCode: "GOV_TROUBLE_AREAS_TEST",
+    activityTitle: "Government Trouble Areas Test",
+    activityType: "test",
+    studentName,
+    attemptNumber,
+    startedAt: startedAt.toISOString(),
+    finishedAt: finishedAt.toISOString(),
+    runtimeSeconds: elapsed,
+    runtimeFormatted: formatTime(elapsed),
+    score,
+    totalQuestions: questions.length,
+    percent,
+    passFail,
+    missedCount,
+    missedStems: missedStems.join(" || "),
+    standardsMissed: standardsMissed.join(" | "),
+    questionTypesMissed: questionTypesMissed.join(" | "),
+    skillsMissed: skillsMissed.join(" | "),
+    detailedResults
+  };
+
+  const postStatus = await postResults(payload);
+
+  APP.innerHTML = `
+    <div class="ticket">
+      <h2>Submission Ticket</h2>
+      <p class="sub">Turn this in to show completion. Spreadsheet-ready data has been prepared and posted if your Apps Script URL is set.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-item">
+          <div class="label">Name</div>
+          <div class="value">${escapeHtml(studentName)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Date</div>
+          <div class="value">${finishedAt.toLocaleDateString()}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Started</div>
+          <div class="value">${formatStamp(startedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Finished</div>
+          <div class="value">${formatStamp(finishedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Runtime</div>
+          <div class="value">${formatTime(elapsed)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Attempt</div>
+          <div class="value">${attemptNumber}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Score</div>
+          <div class="value">${score} / ${questions.length}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Percent</div>
+          <div class="value">${percent}%</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Missed Count</div>
+          <div class="value">${missedCount}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Result</div>
+          <div class="value">${passFail}</div>
+        </div>
+      </div>
+
+      <div class="question-card" style="margin-top:18px;">
+        <div class="q-meta">Analytics Summary</div>
+        <p><strong>Standards Missed:</strong> ${standardsMissed.length ? escapeHtml(standardsMissed.join(", ")) : "None"}</p>
+        <p><strong>Question Types Missed:</strong> ${questionTypesMissed.length ? escapeHtml(questionTypesMissed.join(", ")) : "None"}</p>
+        <p><strong>Skills Missed:</strong> ${skillsMissed.length ? escapeHtml(skillsMissed.join(", ")) : "None"}</p>
+        <p><strong>Missed Stems:</strong></p>
+        <div class="small-muted">${missedStems.length ? missedStems.map(s => `• ${escapeHtml(s)}`).join("<br>") : "None"}</div>
+      </div>
+
+      <div class="question-card" style="margin-top:18px;">
+        <div class="q-meta">Apps Script Status</div>
+        <p class="mono">
+          ${
+            postStatus.skipped
+              ? "POST skipped — paste your Apps Script URL into APPS_SCRIPT_URL at the top of the file."
+              : (postStatus.ok ? "POST attempted to Apps Script." : `POST error: ${escapeHtml(postStatus.error || "Unknown error")}`)
+          }
+        </p>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playAgain">Retake Test</button>
+        <a class="btn secondary" href="../index.html">Back to Hub</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("playAgain").addEventListener("click", hardRestart);
+}
+
+function hardRestart(){
+  if(timer) clearInterval(timer);
+  studentName = "";
+  startedAt = null;
+  finishedAt = null;
+  elapsed = 0;
+  attemptNumber = 1;
+  questions = [];
+  current = 0;
+  score = 0;
+  locked = false;
+  selectedMulti = new Set();
+  currentDropState = null;
+  wrongQuestionIds = [];
+  detailedResults = [];
+  startScreen();
+}
+
+startScreen();
+</script>
+</body>
+</html>
