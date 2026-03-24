@@ -9,15 +9,12 @@
 
 <body>
 <div class="wrap">
-
 <a class="back-link" href="../index.html">← Back to Hub</a>
 
 <header class="hero">
 <div class="kicker">Legend Mastery Series • American Government</div>
 <h1>Game 2 — Federalists vs Anti-Federalists</h1>
-<p class="sub">
-Passage-based mastery. Identify arguments, fears, and support for ratification.
-</p>
+<p class="sub">Passage-based mastery. Identify arguments, fears, and support for ratification.</p>
 
 <div class="pills">
 <span class="pill">30 Questions</span>
@@ -29,103 +26,220 @@ Passage-based mastery. Identify arguments, fears, and support for ratification.
 </header>
 
 <div id="app"></div>
-
 </div>
 
 <script>
 const QUESTIONS = [
 
-{
-passage: "The proposed Constitution creates a strong central government that will better maintain order and provide for national defense.",
-stem: "This viewpoint most closely reflects which group?",
-choices: ["Federalists","Anti-Federalists","Neutralists","Populists"],
-answer: 0,
-hint: "Think: strong national government support.",
-explain: "Federalists supported a stronger national government to provide stability and protection."
-},
+{ passage:"The proposed Constitution creates a strong central government that will maintain order.",
+stem:"This reflects which group?",
+choices:["Anti-Federalists","Federalists","States","Local governments"],
+answer:1,
+hint:"Support strong national government.",
+explain:"Federalists supported a stronger central government."},
 
-{
-passage: "The Constitution does not include protections for individual liberties, which could lead to abuse of power.",
-stem: "This argument was most likely made by",
-choices: ["Federalists","Anti-Federalists","Judges","Governors"],
-answer: 1,
-hint: "Think: concern about rights.",
-explain: "Anti-Federalists opposed the Constitution partly because it lacked a Bill of Rights."
-},
+{ passage:"The Constitution lacks protections for individual rights.",
+stem:"Who argued this?",
+choices:["Federalists","Judges","Anti-Federalists","Governors"],
+answer:2,
+hint:"Think Bill of Rights.",
+explain:"Anti-Federalists wanted protections added."},
 
-{
-passage: "A large republic can better control factions and prevent any one group from dominating others.",
-stem: "This idea supports which position?",
-choices: ["Anti-Federalist","Federalist","State legislatures","Local governments"],
-answer: 1,
-hint: "Think: controlling factions = Federalist No. 10",
-explain: "Federalists believed a large republic would prevent factions from gaining too much power."
-},
+{ passage:"A large republic prevents factions from dominating.",
+stem:"This supports which side?",
+choices:["Anti-Federalists","Federalists","Local leaders","Citizens"],
+answer:1,
+hint:"Federalist No. 10 idea.",
+explain:"Federalists argued large republic = stability."},
 
-{
-passage: "Power should remain with the states because local governments better understand the needs of the people.",
-stem: "This viewpoint reflects",
-choices: ["Federalist thinking","Anti-Federalist thinking","Judicial review","Popular sovereignty"],
-answer: 1,
-hint: "Think: fear of central power.",
-explain: "Anti-Federalists believed state governments were closer to the people and should retain power."
-},
+{ passage:"Power should remain with states.",
+stem:"This reflects",
+choices:["Federalists","Anti-Federalists","Courts","Congress"],
+answer:1,
+hint:"Fear of central government.",
+explain:"Anti-Federalists favored states."},
 
-{
-passage: "The separation of powers in the Constitution ensures that no single branch becomes too powerful.",
-stem: "This argument supports which group?",
-choices: ["Federalists","Anti-Federalists","State governments","Local councils"],
-answer: 0,
-hint: "Think: trust in the system.",
-explain: "Federalists argued that separation of powers and checks and balances would prevent tyranny."
-},
+{ passage:"Separation of powers prevents tyranny.",
+stem:"This supports",
+choices:["Anti-Federalists","Federalists","Local gov","Judges"],
+answer:1,
+hint:"Trust in system.",
+explain:"Federalists trusted structure."},
 
-{
-passage: "A strong executive branch could become similar to a monarchy and threaten individual freedoms.",
-stem: "This concern was raised by",
-choices: ["Federalists","Anti-Federalists","Senators","Judges"],
-answer: 1,
-hint: "Think: fear of president power.",
-explain: "Anti-Federalists feared a strong executive could resemble a king."
-},
+{ passage:"Strong executive could become a king.",
+stem:"This concern is from",
+choices:["Federalists","Anti-Federalists","Courts","Senate"],
+answer:1,
+hint:"Fear of president power.",
+explain:"Anti-Federalists feared monarchy."},
 
-{
-passage: "The new Constitution allows the national government to regulate trade between states.",
-stem: "This was seen by Federalists as",
-choices: ["A weakness","A strength","Unnecessary","Illegal"],
-answer: 1,
-hint: "Think: fixing Articles problems.",
-explain: "Federalists supported regulating interstate commerce to unify the economy."
-},
+{ passage:"National government should regulate trade.",
+stem:"Federalists saw this as",
+choices:["Weakness","Strength","Unnecessary","Illegal"],
+answer:1,
+hint:"Fixing Articles problems.",
+explain:"Federalists wanted economic unity."},
 
-{
-passage: "Without a Bill of Rights, the government could violate freedoms such as speech and religion.",
-stem: "This argument was most likely made by",
-choices: ["Federalists","Anti-Federalists","Supreme Court","Congress"],
-answer: 1,
-hint: "Think: rights protection concern.",
-explain: "Anti-Federalists pushed for a Bill of Rights to protect individual freedoms."
-},
+{ passage:"Without rights listed, freedoms are at risk.",
+stem:"This reflects",
+choices:["Federalists","Anti-Federalists","States","Judges"],
+answer:1,
+hint:"Bill of Rights issue.",
+explain:"Anti-Federalists demanded protections."},
 
-{
-passage: "The Constitution creates a system that balances power between national and state governments.",
-stem: "This reflects which concept?",
-choices: ["Federalism","Judicial review","Popular sovereignty","Direct democracy"],
-answer: 0,
-hint: "Think: power divided.",
-explain: "Federalism divides power between national and state governments."
-},
+{ passage:"Government power is divided between state and national.",
+stem:"This concept is",
+choices:["Federalism","Democracy","Judicial review","Liberty"],
+answer:0,
+hint:"Power split.",
+explain:"Federalism divides power."},
 
-{
-passage: "The national government must have the power to raise an army to defend the country.",
-stem: "This supports which viewpoint?",
-choices: ["Anti-Federalist","Federalist","Localist","Judicial"],
-answer: 1,
-hint: "Think: national defense.",
-explain: "Federalists supported a strong national government to provide defense."
-},
+{ passage:"National defense requires strong central authority.",
+stem:"Supports",
+choices:["Anti-Federalists","Federalists","States","Local gov"],
+answer:1,
+hint:"Think army.",
+explain:"Federalists supported national defense."},
 
-// ---- Continue pattern (total = 30 questions) ----
+{ passage:"Small republics protect liberty better.",
+stem:"This supports",
+choices:["Federalists","Anti-Federalists","Courts","Congress"],
+answer:1,
+hint:"Small government preference.",
+explain:"Anti-Federalists preferred small republics."},
+
+{ passage:"Checks and balances protect freedom.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Citizens","States"],
+answer:0,
+hint:"Trust system.",
+explain:"Federalists supported structure."},
+
+{ passage:"Bill of Rights must be added.",
+stem:"This reflects",
+choices:["Federalists","Anti-Federalists","Courts","Judges"],
+answer:1,
+hint:"Rights demand.",
+explain:"Anti-Federalists insisted on protections."},
+
+{ passage:"National government too weak under Articles.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Judges"],
+answer:0,
+hint:"Fix weakness.",
+explain:"Federalists wanted stronger gov."},
+
+{ passage:"Central power threatens liberty.",
+stem:"This is",
+choices:["Federalist view","Anti-Federalist view","Judicial view","State view"],
+answer:1,
+hint:"Fear argument.",
+explain:"Anti-Federalists feared tyranny."},
+
+{ passage:"Large republic dilutes factions.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Courts"],
+answer:0,
+hint:"Federalist 10 again.",
+explain:"Federalists supported size."},
+
+{ passage:"People need explicit rights protections.",
+stem:"Who argued this?",
+choices:["Federalists","Anti-Federalists","Congress","Courts"],
+answer:1,
+hint:"Bill of Rights.",
+explain:"Anti-Federalists demanded it."},
+
+{ passage:"Strong union prevents conflict between states.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Local gov","Judges"],
+answer:0,
+hint:"National unity.",
+explain:"Federalists wanted unity."},
+
+{ passage:"Executive power must be limited.",
+stem:"This reflects",
+choices:["Federalists","Anti-Federalists","Courts","States"],
+answer:1,
+hint:"Fear executive.",
+explain:"Anti-Federalists feared president."},
+
+{ passage:"Constitution balances power effectively.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Local gov","Citizens"],
+answer:0,
+hint:"Trust system.",
+explain:"Federalists supported design."},
+
+{ passage:"Government should be closer to people.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Courts","Senate"],
+answer:1,
+hint:"Local control.",
+explain:"Anti-Federalists favored local power."},
+
+{ passage:"National government ensures stability.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Courts"],
+answer:0,
+hint:"Strong gov.",
+explain:"Federalists valued stability."},
+
+{ passage:"Rights must be protected explicitly.",
+stem:"Reflects",
+choices:["Federalists","Anti-Federalists","Judges","Congress"],
+answer:1,
+hint:"Rights concern.",
+explain:"Anti-Federalists wanted Bill of Rights."},
+
+{ passage:"Checks prevent abuse of power.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Citizens"],
+answer:0,
+hint:"Structure trust.",
+explain:"Federalists trusted system."},
+
+{ passage:"Large government removes citizen voice.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Courts","Senate"],
+answer:1,
+hint:"Fear size.",
+explain:"Anti-Federalists feared distance."},
+
+{ passage:"Stronger central authority needed.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Courts"],
+answer:0,
+hint:"Fix Articles.",
+explain:"Federalists wanted stronger gov."},
+
+{ passage:"Liberty is safer in small systems.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Courts","Congress"],
+answer:1,
+hint:"Small gov.",
+explain:"Anti-Federalists preferred small scale."},
+
+{ passage:"Constitution creates balance.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","Citizens","States"],
+answer:0,
+hint:"System design.",
+explain:"Federalists supported structure."},
+
+{ passage:"Government must not overpower citizens.",
+stem:"Reflects",
+choices:["Federalists","Anti-Federalists","Courts","Judges"],
+answer:1,
+hint:"Fear power.",
+explain:"Anti-Federalists feared abuse."},
+
+{ passage:"National unity requires strong government.",
+stem:"Supports",
+choices:["Federalists","Anti-Federalists","States","Courts"],
+answer:0,
+hint:"Unity argument.",
+explain:"Federalists supported unity."}
 
 ];
 
@@ -133,55 +247,40 @@ function shuffle(arr){
 return arr.sort(()=>Math.random()-0.5);
 }
 
-function formatTime(s){
-const m = Math.floor(s/60).toString().padStart(2,'0');
-const sec = (s%60).toString().padStart(2,'0');
-return `${m}:${sec}`;
-}
+let current=0, attempts=0, correct=0, startTime, timer;
 
-let current=0, correct=0, attempts=0, startTime, timer;
-
-function startGame(name){
-startTime = Date.now();
-timer = setInterval(()=>{
+function startGame(){
+startTime=Date.now();
+timer=setInterval(()=>{
 document.getElementById("time").textContent =
-formatTime(Math.floor((Date.now()-startTime)/1000));
+Math.floor((Date.now()-startTime)/1000)+"s";
 },1000);
 render();
 }
 
 function render(){
-const q = QUESTIONS[current];
+const q=QUESTIONS[current];
 
-document.getElementById("app").innerHTML = `
-<div class="game-wrap">
-
-<div class="hud">
-<div class="stat"><div class="stat-label">Progress</div><div>${current+1}/${QUESTIONS.length}</div></div>
-<div class="stat"><div class="stat-label">Accuracy</div><div>${attempts===0?100:Math.round((correct/attempts)*100)}%</div></div>
-<div class="stat"><div class="stat-label">Time</div><div id="time">00:00</div></div>
-</div>
-
+document.getElementById("app").innerHTML=`
 <div class="question-card">
 <div class="passage">${q.passage}</div>
 <div class="stem">${q.stem}</div>
 
 <div class="choices">
-${q.choices.map((c,i)=>`<button class="choice" onclick="submit(${i})">${c}</button>`).join("")}
+${shuffle(q.choices).map((c,i)=>`<button class="choice" onclick="submit('${c}')">${c}</button>`).join("")}
 </div>
 
-</div>
-</div>
-`;
+<div class="small">Time: <span id="time">0s</span></div>
+</div>`;
 }
 
-function submit(i){
-const q = QUESTIONS[current];
+function submit(choice){
+const q=QUESTIONS[current];
 attempts++;
 
-if(i===q.answer){
+if(choice===q.choices[q.answer]){
 correct++;
-setTimeout(()=>next(),5000);
+setTimeout(next,5000);
 }else{
 alert(q.hint);
 }
@@ -198,20 +297,21 @@ render();
 
 function endGame(){
 clearInterval(timer);
-document.getElementById("app").innerHTML = `
+document.getElementById("app").innerHTML=`
 <div class="ticket">
 <h2>Submission Ticket</h2>
-<p>Name: ${document.getElementById("name").value}</p>
-<p>Score: ${correct}/${QUESTIONS.length}</p>
+<p>Score: ${correct}/30</p>
+<p>Attempts: ${attempts}</p>
 </div>`;
 }
 
-document.getElementById("app").innerHTML = `
+document.getElementById("app").innerHTML=`
 <div class="start-card">
 <h2>Enter Name</h2>
 <input id="name">
-<button class="btn" onclick="startGame(document.getElementById('name').value)">Start</button>
+<button class="btn" onclick="startGame()">Start</button>
 </div>`;
 </script>
+
 </body>
 </html>
