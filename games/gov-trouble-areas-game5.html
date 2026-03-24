@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game 5 — Branches & Civic Application</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../index.html">← Back to Hub</a>
+
+    <header class="hero">
+      <div class="kicker">Legend Mastery Series • American Government</div>
+      <h1>Game 5 — Branches &amp; Civic Application</h1>
+      <p class="sub">
+        Mixed practice on branch roles, Ohio Constitution topics, civic participation, public policy, fiscal policy, and monetary policy application.
+      </p>
+      <div class="pills">
+        <span class="pill">30 Questions</span>
+        <span class="pill">Mixed Review</span>
+        <span class="pill">Auto-submit</span>
+        <span class="pill">Hint on Miss</span>
+        <span class="pill">Forced Correction</span>
+        <span class="pill">Submission Ticket</span>
+      </div>
+    </header>
+
+    <div id="app"></div>
+  </div>
+
+<script>
+const QUESTIONS = [
+  {
+    passage: "A citizen attends a city council meeting to speak about traffic safety concerns in the community.",
+    stem: "This is best classified as",
+    choices: ["civic participation", "judicial review", "federalism", "monetary policy"],
+    correct: 0,
+    hint: "Think about direct involvement by citizens in public issues.",
+    explain: "Speaking at a public meeting is civic participation because it involves direct citizen engagement in government."
+  },
+  {
+    passage: "The legislative branch writes and passes laws, while the executive branch carries them out and the judicial branch interprets them.",
+    stem: "This passage best describes",
+    choices: ["checks and balances", "separation of powers", "direct democracy", "political socialization"],
+    correct: 1,
+    hint: "The focus is on dividing responsibilities among branches.",
+    explain: "Separation of powers divides the responsibilities of government among legislative, executive, and judicial branches."
+  },
+  {
+    passage: "Voters in Ohio elect state officials, approve some local tax levies, and participate in public discussions about state and local issues.",
+    stem: "This best shows that citizens in Ohio",
+    choices: ["have no role in state government", "can participate in self-government at multiple levels", "only influence the federal government", "must be appointed to affect policy"],
+    correct: 1,
+    hint: "Think about how citizens influence government directly and indirectly.",
+    explain: "Ohio citizens can participate in government by voting, speaking publicly, and influencing state and local decisions."
+  },
+  {
+    passage: "Congress decides to increase government spending during a recession in order to stimulate economic activity.",
+    stem: "This is an example of",
+    choices: ["monetary policy", "fiscal policy", "judicial review", "federalism"],
+    correct: 1,
+    hint: "Think taxes and spending.",
+    explain: "Fiscal policy involves government decisions about taxing and spending to influence the economy."
+  },
+  {
+    passage: "The Federal Reserve lowers interest rates to encourage borrowing and investment.",
+    stem: "This action is best classified as",
+    choices: ["fiscal policy", "monetary policy", "legislative oversight", "judicial restraint"],
+    correct: 1,
+    hint: "The Federal Reserve handles money supply and interest rates.",
+    explain: "Monetary policy is the management of the money supply and interest rates, largely through the Federal Reserve."
+  },
+  {
+    passage: "A governor signs a bill passed by the state legislature.",
+    stem: "This action best shows interaction between the",
+    choices: ["executive and legislative branches", "judicial and legislative branches", "federal and local governments only", "people and courts only"],
+    correct: 0,
+    hint: "Which branch signs bills, and which branch passes them?",
+    explain: "The legislature passes bills, and the governor as executive signs or vetoes them."
+  },
+  {
+    passage: "A student group researches a local issue, gathers evidence, and presents a proposed solution to officials.",
+    stem: "This is best described as",
+    choices: ["civic engagement and informed participation", "judicial review", "executive privilege", "monetary contraction"],
+    correct: 0,
+    hint: "This involves identifying a problem and taking informed action.",
+    explain: "Researching issues and proposing solutions to officials is a strong example of civic engagement."
+  },
+  {
+    passage: "The Ohio Constitution organizes state government and explains powers and responsibilities at the state level.",
+    stem: "This is similar to the U.S. Constitution because both",
+    choices: ["establish structures of government", "eliminate checks and balances", "focus only on local policies", "remove citizen participation"],
+    correct: 0,
+    hint: "Think about what constitutions fundamentally do.",
+    explain: "Both the Ohio and U.S. Constitutions establish the structure, powers, and responsibilities of government."
+  },
+  {
+    passage: "The judicial branch hears a case involving whether a law was applied fairly and constitutionally.",
+    stem: "Which branch responsibility is being illustrated?",
+    choices: ["interpreting laws", "creating laws", "collecting taxes", "printing money"],
+    correct: 0,
+    hint: "Courts decide meaning and constitutionality.",
+    explain: "The judicial branch interprets laws and decides cases involving legal and constitutional disputes."
+  },
+  {
+    passage: "Congress cuts taxes in an effort to encourage consumer spending and business investment.",
+    stem: "This is an example of",
+    choices: ["judicial review", "monetary policy", "fiscal policy", "federalism"],
+    correct: 2,
+    hint: "Taxing and spending decisions are the clue.",
+    explain: "Tax cuts are part of fiscal policy because they are decisions about taxation used to influence the economy."
+  },
+  {
+    passage: "The Federal Reserve sells government securities in order to reduce the money supply.",
+    stem: "This action is best understood as",
+    choices: ["expansionary fiscal policy", "contractionary monetary policy", "judicial restraint", "civic participation"],
+    correct: 1,
+    hint: "Selling securities pulls money out of the economy.",
+    explain: "Selling government securities is a contractionary monetary tool used to reduce the money supply."
+  },
+  {
+    passage: "A citizen contacts a state legislator to support a bill affecting education policy.",
+    stem: "This is best classified as",
+    choices: ["public policy participation", "judicial review", "executive enforcement", "monetary regulation"],
+    correct: 0,
+    hint: "The citizen is trying to influence government action.",
+    explain: "Contacting a legislator is a direct way for citizens to participate in public policy."
+  },
+  {
+    passage: "The legislative branch holds hearings to study a proposed law before voting on it.",
+    stem: "This best illustrates the legislative role of",
+    choices: ["interpreting laws", "making laws", "enforcing laws", "regulating interest rates"],
+    correct: 1,
+    hint: "Hearings and voting point to one core branch responsibility.",
+    explain: "The legislative branch is responsible for making laws, and hearings are part of that process."
+  },
+  {
+    passage: "A student compares the costs and benefits of a proposed public transportation plan before recommending a position.",
+    stem: "This action most clearly shows",
+    choices: ["reasoned civic decision-making", "judicial review", "federal supremacy", "executive privilege"],
+    correct: 0,
+    hint: "The key is evaluating evidence before taking a stand.",
+    explain: "Weighing costs and benefits before forming a position is an important civic skill."
+  },
+  {
+    passage: "The executive branch carries out a law passed by the legislature and signed into effect.",
+    stem: "This best demonstrates the executive role of",
+    choices: ["enforcing laws", "writing constitutions", "interpreting statutes in court", "ratifying amendments"],
+    correct: 0,
+    hint: "The executive branch executes what government has enacted.",
+    explain: "A primary executive function is enforcing and administering laws."
+  },
+  {
+    passage: "A county government creates policies for local roads, zoning, and local services while still following state law.",
+    stem: "This example best illustrates",
+    choices: ["federalism and layered government authority", "judicial review only", "direct democracy only", "monetary policy"],
+    correct: 0,
+    hint: "Think about multiple levels of government having roles.",
+    explain: "This shows how authority is distributed across levels of government while lower levels still operate within higher law."
+  },
+  {
+    passage: "The Federal Reserve lowers reserve requirements for banks to increase lending.",
+    stem: "This is best classified as",
+    choices: ["contractionary fiscal policy", "expansionary monetary policy", "judicial activism", "legislative oversight"],
+    correct: 1,
+    hint: "Lower reserve requirements encourage more money moving into the economy.",
+    explain: "Lowering reserve requirements is an expansionary monetary policy because it increases potential lending."
+  },
+  {
+    passage: "Citizens organize a petition drive to encourage local officials to address drinking water problems.",
+    stem: "This is best described as",
+    choices: ["civic participation", "executive privilege", "judicial incorporation", "monetary tightening"],
+    correct: 0,
+    hint: "This is direct citizen action to influence government.",
+    explain: "Petitioning is a classic form of civic participation."
+  },
+  {
+    passage: "The Ohio Constitution and the U.S. Constitution both contain provisions that limit government power and protect certain rights.",
+    stem: "This similarity best reflects the principle of",
+    choices: ["limited government", "executive supremacy", "judicial monopoly", "single-party rule"],
+    correct: 0,
+    hint: "The focus is on restricting power, not expanding it.",
+    explain: "Limited government means that governmental power is restricted by constitutional rules and protections."
+  },
+  {
+    passage: "A citizen researches candidates, compares their positions, and votes in an election.",
+    stem: "This best demonstrates",
+    choices: ["informed participation in representative government", "judicial review", "monetary expansion", "legislative oversight"],
+    correct: 0,
+    hint: "Voting is stronger when paired with research and evaluation.",
+    explain: "Researching candidates and voting is an important form of informed participation in representative government."
+  },
+  {
+    passage: "During a downturn, government increases spending on infrastructure projects in hopes of creating jobs.",
+    stem: "This is best classified as",
+    choices: ["expansionary fiscal policy", "contractionary monetary policy", "judicial activism", "federal supremacy"],
+    correct: 0,
+    hint: "Government spending is the clue.",
+    explain: "Increasing government spending to stimulate the economy is expansionary fiscal policy."
+  },
+  {
+    passage: "The Federal Reserve raises interest rates to slow inflation.",
+    stem: "This is an example of",
+    choices: ["expansionary fiscal policy", "contractionary monetary policy", "civic engagement", "judicial review"],
+    correct: 1,
+    hint: "Higher rates generally slow borrowing and spending.",
+    explain: "Raising interest rates is a contractionary monetary policy used to cool inflation."
+  },
+  {
+    passage: "The judicial branch reviews whether a government action violated due process protections.",
+    stem: "This best reflects the judicial responsibility of",
+    choices: ["interpreting and applying the law", "writing statutes", "setting tax rates", "creating currency"],
+    correct: 0,
+    hint: "Courts decide legal meaning and fairness in cases.",
+    explain: "The judicial branch interprets and applies laws, including constitutional protections like due process."
+  },
+  {
+    passage: "People write letters to the editor, speak at meetings, and contact officials to influence policy decisions.",
+    stem: "These actions are best classified as",
+    choices: ["methods of civic participation", "forms of judicial review", "monetary policy tools", "implied powers only"],
+    correct: 0,
+    hint: "These are all ways citizens try to shape public decisions.",
+    explain: "Citizens can influence government through multiple forms of civic participation and public input."
+  },
+  {
+    passage: "The state legislature passes a budget for public education and transportation programs.",
+    stem: "This most clearly illustrates the legislative power of",
+    choices: ["appropriation and lawmaking", "judicial interpretation", "executive enforcement only", "monetary control"],
+    correct: 0,
+    hint: "Budgets are tied to spending decisions made by legislatures.",
+    explain: "Legislatures make laws and appropriate money through the budget process."
+  },
+  {
+    passage: "A local school board follows state law while making policies that fit community needs.",
+    stem: "This is best understood as",
+    choices: ["government at multiple levels working within a constitutional framework", "judicial review", "executive privilege", "monetary contraction"],
+    correct: 0,
+    hint: "Think state and local interaction, not just one branch.",
+    explain: "This shows how different levels of government function within a larger constitutional and legal structure."
+  },
+  {
+    passage: "Citizens debate the costs and benefits of a proposed tax levy before voting on it.",
+    stem: "This best shows",
+    choices: ["public deliberation in self-government", "judicial activism", "executive enforcement", "federal supremacy only"],
+    correct: 0,
+    hint: "The key is citizens evaluating policy choices together.",
+    explain: "Deliberating over policy costs and benefits before voting is a strong example of self-government."
+  },
+  {
+    passage: "The Federal Reserve buys government securities to increase the money supply.",
+    stem: "This action is best classified as",
+    choices: ["expansionary monetary policy", "contractionary fiscal policy", "judicial review", "legislative oversight"],
+    correct: 0,
+    hint: "Buying securities puts money into the economy.",
+    explain: "When the Federal Reserve buys securities, it increases the money supply, which is expansionary monetary policy."
+  },
+  {
+    passage: "A group of students identifies a community problem, researches causes, and presents realistic solutions to public officials.",
+    stem: "This most clearly demonstrates",
+    choices: ["effective civic problem-solving", "judicial review", "executive privilege", "federalism only"],
+    correct: 0,
+    hint: "This is the process of identifying issues and acting on them.",
+    explain: "Researching a public problem and proposing solutions is a strong example of civic problem-solving."
+  },
+  {
+    passage: "A constitution sets out governmental structure, powers, limits, and responsibilities.",
+    stem: "The main purpose of a constitution is to",
+    choices: ["establish the framework of government", "replace all ordinary laws", "eliminate citizen input", "set interest rates"],
+    correct: 0,
+    hint: "Think about what constitutions do at the broadest level.",
+    explain: "A constitution provides the framework for government by defining structure, powers, and limits."
+  }
+];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function formatTime(seconds){
+  const h = Math.floor(seconds / 3600).toString().padStart(2,"0");
+  const m = Math.floor((seconds % 3600) / 60).toString().padStart(2,"0");
+  const s = Math.floor(seconds % 60).toString().padStart(2,"0");
+  return `${h}:${m}:${s}`;
+}
+
+function formatStamp(d){
+  return d.toLocaleString();
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
+const APP = document.getElementById("app");
+
+let studentName = "";
+let startedAt = null;
+let timer = null;
+let elapsed = 0;
+
+let questions = [];
+let current = 0;
+let misses = 0;
+let attempts = 0;
+let locked = false;
+let awaitingCorrection = false;
+
+function buildQuestionBank(){
+  return QUESTIONS.map((q, idx) => {
+    const order = shuffle(q.choices.map((choice, i) => ({ choice, originalIndex: i })));
+    const remappedChoices = order.map(x => x.choice);
+    const newCorrect = order.findIndex(x => x.originalIndex === q.correct);
+    return { ...q, id: idx + 1, choices: remappedChoices, correct: newCorrect };
+  });
+}
+
+function startScreen(){
+  APP.innerHTML = `
+    <div class="start-card">
+      <h2>Enter your name to begin</h2>
+      <p>
+        Mastery rules: auto-advance on correct, hint on miss, and you must correct missed items before moving forward.
+      </p>
+      <input id="studentName" type="text" placeholder="Enter your name to begin" autocomplete="off" />
+      <button class="btn" id="startBtn">Start Game</button>
+      <hr class="sep">
+      <p class="note">Your ticket will show name, date, start time, runtime, accuracy, attempts, and result.</p>
+    </div>
+  `;
+
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("studentName").value.trim();
+    if(!name){
+      alert("Please enter your name before starting.");
+      return;
+    }
+    studentName = name;
+    startedAt = new Date();
+    elapsed = 0;
+    current = 0;
+    misses = 0;
+    attempts = 0;
+    locked = false;
+    awaitingCorrection = false;
+    questions = buildQuestionBank();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(() => {
+      elapsed++;
+      const rt = document.getElementById("runtime");
+      if(rt) rt.textContent = formatTime(elapsed);
+    }, 1000);
+
+    renderQuestion();
+  });
+}
+
+function renderQuestion(feedbackHtml = ""){
+  const q = questions[current];
+  const progressPct = Math.round((current / questions.length) * 100);
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+
+  APP.innerHTML = `
+    <div class="game-wrap">
+      <div class="hud">
+        <div class="stat">
+          <div class="stat-label">Progress</div>
+          <div class="stat-value">${current + 1} / ${questions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value">${accuracy}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Attempts</div>
+          <div class="stat-value">${attempts}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Runtime</div>
+          <div class="stat-value" id="runtime">${formatTime(elapsed)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Started</div>
+          <div class="stat-value">${formatStamp(startedAt)}</div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${progressPct}%"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-meta">Question ${current + 1} of ${questions.length}</div>
+        <div class="passage">${escapeHtml(q.passage)}</div>
+        <div class="stem">${escapeHtml(q.stem)}</div>
+
+        <div class="choices" id="choices"></div>
+
+        ${feedbackHtml}
+
+        <div class="controls">
+          <button class="btn secondary" id="restartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("restartBtn").addEventListener("click", hardRestart);
+
+  const choicesEl = document.getElementById("choices");
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(choice)}`;
+    btn.addEventListener("click", () => submitSingle(i));
+    choicesEl.appendChild(btn);
+  });
+}
+
+function submitSingle(selected){
+  if(locked) return;
+  locked = true;
+  attempts++;
+
+  const q = questions[current];
+  const correct = selected === q.correct;
+
+  if(correct){
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Correct</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    misses++;
+    awaitingCorrection = true;
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Not yet</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function retrySingle(selected){
+  if(!awaitingCorrection) return;
+  const q = questions[current];
+  if(selected === q.correct){
+    awaitingCorrection = false;
+    locked = true;
+    const feedback = `
+      <div class="feedback good">
+        <span class="label">Corrected</span>
+        ${escapeHtml(q.explain)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    setTimeout(nextQuestion, 5000);
+  } else {
+    const feedback = `
+      <div class="feedback bad">
+        <span class="label">Try again</span>
+        ${escapeHtml(q.hint)}
+      </div>
+    `;
+    renderQuestion(feedback);
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    choiceButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => retrySingle(idx));
+    });
+  }
+}
+
+function nextQuestion(){
+  locked = false;
+  awaitingCorrection = false;
+  current++;
+  if(current >= questions.length){
+    finishGame();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishGame(){
+  clearInterval(timer);
+  const finishedAt = new Date();
+  const accuracy = attempts === 0 ? 100 : Math.round(((attempts - misses) / attempts) * 100);
+  const passed = misses === 0 ? "MASTERED" : "REPLAY";
+
+  APP.innerHTML = `
+    <div class="ticket">
+      <h2>Submission Ticket</h2>
+      <p class="sub">Turn this in to show completion.</p>
+
+      <div class="ticket-grid">
+        <div class="ticket-item">
+          <div class="label">Name</div>
+          <div class="value">${escapeHtml(studentName)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Date</div>
+          <div class="value">${finishedAt.toLocaleDateString()}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Started</div>
+          <div class="value">${formatStamp(startedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Finished</div>
+          <div class="value">${formatStamp(finishedAt)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Runtime</div>
+          <div class="value">${formatTime(elapsed)}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Accuracy</div>
+          <div class="value">${accuracy}%</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Attempts</div>
+          <div class="value">${attempts}</div>
+        </div>
+        <div class="ticket-item">
+          <div class="label">Result</div>
+          <div class="value">${passed}</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playAgain">Play Again</button>
+        <a class="btn secondary" href="../index.html">Back to Hub</a>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("playAgain").addEventListener("click", hardRestart);
+}
+
+function hardRestart(){
+  if(timer) clearInterval(timer);
+  studentName = "";
+  startedAt = null;
+  elapsed = 0;
+  current = 0;
+  misses = 0;
+  attempts = 0;
+  locked = false;
+  awaitingCorrection = false;
+  startScreen();
+}
+
+startScreen();
+</script>
+</body>
+</html>
